@@ -9,7 +9,8 @@ import { RestaurantSheetComponent } from './component/restaurant-sheet/restauran
 import { TopBarComponent } from './component/top-bar/top-bar.component';
 import { FooterComponent } from './component/footer/footer.component';
 import {HttpClientModule} from '@angular/common/http';
-import { RestaurantDetailComponent } from './component/restaurant-detail/restaurant-detail.component';
+import { CreationCommandComponent } from './component/creation-command/creation-command.component';
+import {RestaurantDetailComponent} from './component/restaurant-detail/restaurant-detail.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { RestaurantDetailComponent } from './component/restaurant-detail/restaur
     RestaurantSheetComponent,
     TopBarComponent,
     FooterComponent,
-    RestaurantDetailComponent
+    RestaurantDetailComponent,
+    CreationCommandComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +30,7 @@ import { RestaurantDetailComponent } from './component/restaurant-detail/restaur
       { path: '', component: WelcomePageComponent },
       { path: 'restaurants', component: RestaurantListComponent },
       { path: 'restaurants/:restaurantId', component: RestaurantDetailComponent },
+      { path: '../creationCommand/:restaurantId', component: CreationCommandComponent },
          /*  { path: 'director/:directorId', component: DirectorSheetComponent },
       { path: 'addamovie', component: AddAMoviePageComponent }*/
     ]),
