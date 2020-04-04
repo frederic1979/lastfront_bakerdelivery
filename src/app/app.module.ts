@@ -9,7 +9,7 @@ import { RestaurantSheetComponent } from './component/restaurant-sheet/restauran
 import { TopBarComponent } from './component/top-bar/top-bar.component';
 import { FooterComponent } from './component/footer/footer.component';
 import {HttpClientModule} from '@angular/common/http';
-import { RestaurantDetailComponent } from './component/restaurant-detail/restaurant-detail/restaurant-detail.component';
+import { RestaurantDetailComponent } from './component/restaurant-detail/restaurant-detail.component';
 
 @NgModule({
   declarations: [
