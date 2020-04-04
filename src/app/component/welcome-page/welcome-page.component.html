@@ -1,0 +1,34 @@
+
+
+  <nav id="user_choice">
+    <ul>
+      <li class="deroulant">
+        <a href="#">Choix Restaurant &ensp;</a>
+        <ul class="sous" >
+          <li *ngFor="let restaurant of restaurantList" >
+            <a href="#" [routerLink]="['restaurants',restaurant.id]" > {{ restaurant.name }} </a>
+
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+
+
+
+
+
+<div>
+  <div class="Title">
+    <h1>Bienvenue sur <span>BAKER DELIVERY</span> !</h1>
+  </div>
+  <div class="What_for">
+    <h2><span>BAKER DELIVERY</span> L'application qui vous permet de :</h2>
+    <ul>
+      <li><h3>Visualiser vos commandes par restaurant </h3></li>
+      <li><h3>Modifier le nombre de commandes prévisionnelles</h3></li>
+      <li><h3>Générer et envoyer vos factures à vos clients</h3></li>
+    </ul>
+  </div>
+</div>
