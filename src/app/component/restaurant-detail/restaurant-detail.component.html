@@ -1,11 +1,28 @@
 
 <div>
   <ul>
-    <li>Identifiant : {{restaurant.id}}</li>
+    <li>Identifiant Restaurateur : {{restaurant.id}}</li>
     <li>Nom : {{restaurant.name}}</li>
-    <li>Adresse : {{restaurant.addresse}}</li>
+    <li>Adresse : {{restaurant.adresse}}</li>
     <li>Mail : {{restaurant.email}}</li>
   </ul>
 
 
 </div>
+
+  <h2>COMMANDES</h2>
+
+
+    <div *ngFor="let command of commands">
+      <section id="liste_commandes">
+      <h6>CommandId : {{command.id}}</h6>
+      <h6>quantity : {{command.quantity}}</h6>
+         <h6>date : {{command.date}}</h6>
+      <h6>le resto en question : {{restaurant.name}}</h6>
+      </section>
+
+
+    </div>
+
+
+
