@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {RestaurantService} from '../../service/restaurant.service';
 import {ActivatedRoute} from '@angular/router';
+import {Restaurant} from '../../model/restaurant';
+
 
 @Component({
   selector: 'app-restaurant-detail',
@@ -9,10 +11,12 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class RestaurantDetailComponent implements OnInit {
 
+  restaurantId;
+  restaurant: Restaurant = new Restaurant();
+
   constructor(private restaurantService: RestaurantService, private route: ActivatedRoute) { }
 
-  restaurantId;
-  restaurant;
+
 
 
   ngOnInit() {
