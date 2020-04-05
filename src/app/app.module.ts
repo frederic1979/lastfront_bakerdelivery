@@ -11,6 +11,7 @@ import { FooterComponent } from './component/footer/footer.component';
 import {HttpClientModule} from '@angular/common/http';
 import { CreationCommandComponent } from './component/creation-command/creation-command.component';
 import {RestaurantDetailComponent} from './component/restaurant-detail/restaurant-detail.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,13 +28,14 @@ import {RestaurantDetailComponent} from './component/restaurant-detail/restauran
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot([
-      { path: '', component: WelcomePageComponent },
-      { path: 'restaurants', component: RestaurantListComponent },
-      { path: 'restaurants/:restaurantId', component: RestaurantDetailComponent },
-      { path: '../creationCommand/:restaurantId', component: CreationCommandComponent },
-         /*  { path: 'director/:directorId', component: DirectorSheetComponent },
-      { path: 'addamovie', component: AddAMoviePageComponent }*/
+      {path: '', component: WelcomePageComponent},
+      {path: 'restaurants', component: RestaurantListComponent},
+      {path: 'restaurants/:restaurantId', component: RestaurantDetailComponent},
+      {path: 'creationCommand/:restaurantId', component: CreationCommandComponent},
+      /*  { path: 'director/:directorId', component: DirectorSheetComponent },
+   { path: 'addamovie', component: AddAMoviePageComponent }*/
     ]),
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -15,4 +15,8 @@ export class CommandService {
     return this.httpClient.get<Command[]>('http://localhost:8080/api/bakerdelivery/commands/restaurant/' + restaurantId);
   }
 
+  addCommand(command): Observable<Command> {
+    return this.httpClient.post<Command>('http://localhost:8080/api/bakerdelivery/commands/', command);
+  }
+
 }

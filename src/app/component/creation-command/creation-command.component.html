@@ -1,2 +1,22 @@
 <p>creation-command works!</p>
-<h1>on est toujours rattaché au restoI : {{restaurantId}}</h1>
+<h1>on est toujours rattaché au resto : {{restaurantId}}</h1>
+
+
+<h1>CREATION COMMANDE</h1>
+
+<form [formGroup]="commandForm" >
+  <div>
+    <label for="quantity">Saisir le quantity :</label>
+    <input id="quantity" formControlName="quantity">
+  </div>
+
+  <div>
+    <label for="date">Saisir date :</label>
+    <input id="date" formControlName="date">
+  </div>
+
+
+  <button (click)="postCommand(commandForm.value)" >Soumettre</button>
+
+</form>
+
