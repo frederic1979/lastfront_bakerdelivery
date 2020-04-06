@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Restaurant} from '../../model/restaurant';
 import {CommandService} from '../../service/command.service';
 import {Command} from '../../model/command';
+import {Local} from 'protractor/built/driverProviders';
 
 
 @Component({
@@ -16,6 +17,10 @@ export class RestaurantDetailComponent implements OnInit {
   restaurantId;
   restaurant: Restaurant = new Restaurant();
   commands ;
+  commandsWeek;
+  date = null;
+  start = '2020-01-01';
+  end = '2020-01-07';
 
   constructor(private restaurantService: RestaurantService, private commandService: CommandService, private route: ActivatedRoute) {
   }
@@ -32,7 +37,7 @@ export class RestaurantDetailComponent implements OnInit {
 
     this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');
     this.restaurantService.getRestaurantById(this.restaurantId).subscribe(rep => {
-      this.restaurant = rep;
+          this.restaurant = rep;
     });
 
     /*this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');*/
@@ -40,10 +45,17 @@ export class RestaurantDetailComponent implements OnInit {
       this.commands = rep;
     });
 
+    this.commandService.getCommandsByRestaurantIdAndBetweenTwoDates(this.restaurantId, this.date, this.start, this.end).subscribe(rep => {
+      this.commandsWeek = rep;
+      console.log(this.commandsWeek.length);
+    });
 
 
   }
 
+ /* jourSemaine(date) {
+   return date;
+  }*/
 
 
 

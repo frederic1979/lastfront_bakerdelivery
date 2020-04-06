@@ -15,11 +15,12 @@
 </a>
 
   <h2>COMMANDES</h2>
+<h3>Semaine du {{start}} au {{end}}</h3>
 
-
-    <div *ngFor="let command of commands">
+    <div *ngFor="let command of commandsWeek">
 
       <section id="liste_commandes">
+        <h5>Jour : </h5>
       <h6>CommandId : {{command.id}}</h6>
       <h6>quantity : {{command.quantity}}</h6>
          <h6>date : {{command.date}}</h6>
