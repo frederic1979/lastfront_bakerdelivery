@@ -5,9 +5,10 @@ div {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  height: 80px;
   width: auto;
   background-color: sandybrown;
+
 
 }
 
@@ -30,12 +31,17 @@ div div {
 }
 
 .clap_boulange {
-  height: 50px;
+  height: 200px;
+
+
 }
 
 .welcome_Page_button {
+
   background: none;
-  border-color: brown;
+border: none;
+
+
 }
 
 a .button_connexion {
@@ -50,4 +56,33 @@ a .button_connexion {
   padding: 0 15px;
   border-color: sandybrown;
   background-color: saddlebrown;
+}
+
+
+/**
+ * ZOOM IMAGE EFFECT ON HOVER // wpRock.fr
+ */
+.wprock-img-zoom-hover .wprock-img-zoom {
+  overflow: hidden;
+  position: relative;
+  height: 80px;
+
+}
+.wprock-img-zoom-hover .wprock-img-zoom img {
+  max-width: 120%;
+  -moz-transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+  transition: all 0.1s;
+}
+.wprock-img-zoom-hover .wprock-img-zoom * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.wprock-img-zoom-hover:hover .wprock-img-zoom img {
+  -moz-transform: scale(1.06);
+  -webkit-transform: scale(1.06);
+  transform: scale(1.06);
 }

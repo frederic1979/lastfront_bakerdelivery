@@ -21,7 +21,8 @@ export class RestaurantDetailComponent implements OnInit {
   date = null;
   start = '2020-01-01';
   end = '2020-01-07';
-
+  newCommand: Command = new Command();
+  a: number;
   constructor(private restaurantService: RestaurantService, private commandService: CommandService, private route: ActivatedRoute) {
   }
 
@@ -53,10 +54,38 @@ export class RestaurantDetailComponent implements OnInit {
 
   }
 
- /* jourSemaine(date) {
-   return date;
-  }*/
+  addQuantity(quantity) {
+    quantity = quantity + 1;
+    this.ngOnInit();
+    console.log(quantity);
+  }
 
+  subQuantity(quantity) {
+    quantity = quantity - 1;
+  }
+
+  updateCommand(command, a) {
+    console.log('entrer dans le update');
+    this.newCommand.id = command.id
+    this.newCommand.date = command.date;
+    this.newCommand.quantity = command.quantity + a;
+    this.newCommand.restaurantId = this.restaurantId;
+
+    console.log('la quantité est maintenant :' + this.newCommand.quantity);
+    this.commandService.updateCommand(this.newCommand).subscribe(
+      (response) => {
+        console.log('resp :' + response);
+        this.ngOnInit();
+
+      }, (err) => {
+        console.log('erreur : ' + err);
+      },
+      () => {
+        console.log('end');
+      }
+    );
+
+  }
 
 
 }

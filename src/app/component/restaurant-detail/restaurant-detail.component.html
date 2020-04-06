@@ -21,9 +21,11 @@
 
       <section id="liste_commandes">
         <h5>Jour : </h5>
-      <h6>CommandId : {{command.id}}</h6>
-      <h6>quantity : {{command.quantity}}</h6>
-         <h6>date : {{command.date}}</h6>
+      <h6>Identifiant Commande : {{command.id}}</h6>
+      <h6>quantité : {{command.quantity}}</h6>
+        <button (click)="updateCommand(command,a=-1)">-</button>
+        <button (click)="updateCommand(command,a=1)">+</button>
+        <h6>date : {{command.date}}</h6>
 
       </section>
 

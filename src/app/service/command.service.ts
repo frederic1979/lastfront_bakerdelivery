@@ -19,6 +19,10 @@ export class CommandService {
     return this.httpClient.post<Command>('http://localhost:8080/api/bakerdelivery/commands/', command);
   }
 
+  updateCommand(command) {
+    return this.httpClient.put('http://localhost:8080/api/bakerdelivery/commands/' + command.id, command);
+  }
+
   getCommandsByRestaurantIdAndBetweenTwoDates(restaurantId, date, start, end) {
     if (date === null && start === null && end === null) {
       return this.httpClient.get('http://localhost:8080/api/bakerdelivery/commands/restaurant/' + restaurantId);
