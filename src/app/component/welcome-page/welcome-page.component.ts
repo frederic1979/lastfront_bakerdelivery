@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {RestaurantService} from '../../service/restaurant.service';
+import {Restaurant} from '../../model/restaurant';
 
 @Component({
   selector: 'app-welcome-page',
@@ -8,23 +9,23 @@ import {RestaurantService} from '../../service/restaurant.service';
 })
 export class WelcomePageComponent implements OnInit {
 
-restaurantList;
+  restaurantList;
 
   constructor(private restaurantService: RestaurantService) {
   }
 
   ngOnInit() {
-    this.restaurantService.getRestaurantList().subscribe(rep => {
+    /*this.restaurantService.getRestaurantList().subscribe(rep => {
       this.restaurantList = rep;
 
     });
-    console.log(this.restaurantList);
+    console.log(this.restaurantList);*/
   }
 
 
 
 
-  /*getRestaurantList() {
+  getRestaurantList() {
     this.restaurantService.getRestaurantList().subscribe(
       (response) => {
         console.log('resp :' + response);
@@ -37,6 +38,5 @@ restaurantList;
       }
     );
   }
-*/
 
 }

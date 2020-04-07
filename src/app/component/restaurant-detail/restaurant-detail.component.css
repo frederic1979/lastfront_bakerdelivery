@@ -10,3 +10,12 @@ li {
   margin-right: 40%;
 
 }
+
+
+.buttonQuantity{
+  border: solid;
+  background-color: black;
+  color: white;
+  width: 50px;
+  cursor: pointer;
+}

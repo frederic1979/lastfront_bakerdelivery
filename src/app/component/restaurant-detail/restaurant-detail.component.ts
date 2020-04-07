@@ -21,8 +21,15 @@ export class RestaurantDetailComponent implements OnInit {
   date = null;
   start = '2020-01-01';
   end = '2020-01-07';
-  newCommand: Command = new Command();
+
+
+  /*use for updateCommand()*/
   a: number;
+  newCommand: Command = new Command();
+
+  x: Date;
+
+
   constructor(private restaurantService: RestaurantService, private commandService: CommandService, private route: ActivatedRoute) {
   }
 
@@ -41,28 +48,21 @@ export class RestaurantDetailComponent implements OnInit {
           this.restaurant = rep;
     });
 
-    /*this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');*/
+/*
     this.commandService.getCommandsByRestaurantId(this.restaurantId).subscribe(rep => {
       this.commands = rep;
-    });
+    });*/
 
     this.commandService.getCommandsByRestaurantIdAndBetweenTwoDates(this.restaurantId, this.date, this.start, this.end).subscribe(rep => {
       this.commandsWeek = rep;
-      console.log(this.commandsWeek.length);
+
     });
 
+    this.x = new Date();
+    console.log(this.x);
 
   }
 
-  addQuantity(quantity) {
-    quantity = quantity + 1;
-    this.ngOnInit();
-    console.log(quantity);
-  }
-
-  subQuantity(quantity) {
-    quantity = quantity - 1;
-  }
 
   updateCommand(command, a) {
     console.log('entrer dans le update');
