@@ -12,7 +12,7 @@ export class RestaurantListComponent implements OnInit {
 
   commandsList;
   restaurantList;
-  commanda;
+  commanda: Command;
   date = '2020-03-30';
 
 
@@ -33,10 +33,33 @@ export class RestaurantListComponent implements OnInit {
 
   }
 
-
-  isCommandRestauIdEqualRestaurantId(){
-    for ()
+  getQuantityCommandByRestauIdAndDate(restaurantId, date) {
+    for (const command of this.commandsList) {
+      if (command.restaurantId === restaurantId && command.date === date) {
+        return  command.quantity;
+      }
+    }
   }
+
+
+  /*
+
+    getCommandsListByRestaurantId(restaurantId) {
+      this.commandService.getCommandsByRestaurantId(restaurantId).subscribe(
+        (response) => {
+          console.log('resp :' + response);
+
+          console.log(this.commanda.quantity);
+        }, (err) => {
+          console.log('erreur : ' + err);
+        },
+        () => {
+          console.log('end');
+        }
+      );
+    }
+  */
+
 
   /*getCommandByRestaurantIdAndDate(restaurantId) {
 

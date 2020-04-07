@@ -19,8 +19,8 @@ export class RestaurantDetailComponent implements OnInit {
   commands ;
   commandsWeek;
   date = null;
-  start = '2020-01-01';
-  end = '2020-01-07';
+  start = '2020-03-30';
+  end = '2020-04-05';
 
 
   /*use for updateCommand()*/
