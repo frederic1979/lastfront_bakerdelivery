@@ -42,40 +42,8 @@ export class RestaurantListComponent implements OnInit {
   }
 
 
-  /*
-
-    getCommandsListByRestaurantId(restaurantId) {
-      this.commandService.getCommandsByRestaurantId(restaurantId).subscribe(
-        (response) => {
-          console.log('resp :' + response);
-
-          console.log(this.commanda.quantity);
-        }, (err) => {
-          console.log('erreur : ' + err);
-        },
-        () => {
-          console.log('end');
-        }
-      );
-    }
-  */
 
 
-  /*getCommandByRestaurantIdAndDate(restaurantId) {
 
-    this.commandService.getCommandsByRestaurantIdAndBetweenTwoDates(restaurantId, this.date, null, null).subscribe(
-      (response) => {
-        console.log('resp :' + response);
-        this.commanda = response;
-        console.log(this.commanda.quantity);
-      }, (err) => {
-        console.log('erreur : ' + err);
-      },
-      () => {
-        console.log('end');
-      }
-    );
-  }
 
-*/
 }

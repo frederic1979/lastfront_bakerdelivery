@@ -1,0 +1,20 @@
+
+<table>
+<tr>
+  <th>Restaurant</th>
+  <th>{{setDayOfTheWeek(dateOftheDay)}}</th>
+
+
+
+</tr>
+
+
+<tr *ngFor="let restaurant of restaurantList">
+
+  <td> {{restaurant.name}}</td>
+
+  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,dateOftheDay)}}</td>
+
+</tr>
+
+</table>
