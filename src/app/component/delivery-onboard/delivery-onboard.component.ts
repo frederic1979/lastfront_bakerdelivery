@@ -3,6 +3,7 @@ import {Command} from '../../model/command';
 import {RestaurantService} from '../../service/restaurant.service';
 import {CommandService} from '../../service/command.service';
 import {WeekDay} from '@angular/common';
+import {Restaurant} from '../../model/restaurant';
 
 @Component({
   selector: 'app-delivery-onboard',
@@ -13,7 +14,8 @@ export class DeliveryOnboardComponent implements OnInit {
 
 
   commandsList;
-  restaurantList;
+  restaurantListNotOk;
+  restaurantListOk: Restaurant[] = new Array();
   commanda: Command;
   dateOftheDay = new Date();
   dateFormat;
@@ -28,13 +30,9 @@ export class DeliveryOnboardComponent implements OnInit {
     });
 
     this.restaurantService.getRestaurantList().subscribe(rep => {
-      this.restaurantList = rep;
+      this.restaurantListNotOk = rep;
 
     });
-    console.log('la date du jour en js' + this.dateOftheDay);
-    console.log('le jour en js est :' + this.dateOftheDay.getDay());
-
-    console.log(this.dateOftheDay.toISOString().slice(0, 10));
 
   }
 
@@ -66,21 +64,34 @@ export class DeliveryOnboardComponent implements OnInit {
     }
   }
 
+
   getQuantityCommandByRestauIdAndDate(restaurantId, date) {
-    console.log('la date est comme ça : ' + date);
     this.dateFormat = date.toISOString().slice(0, 10);
-    console.log(this.dateFormat);
     for (const command of this.commandsList) {
       console.log('egalité ?  : ' + command.date === this.dateFormat);
       if (command.restaurantId === restaurantId && command.date === this.dateFormat) {
-        return  command.quantity;
+        return command.quantity;
       }
     }
   }
 
 
+  /*
+    goDownRestaurantInList(restaurantId){
+  this.restaurantListOk.add(restaurantI)
+    }
+  */
 
+  addRestaurantInrestaurantListOk(restaurant) {
+    console.log('ici le restau est : ' + restaurant.name);
+    console.log('dans ma console' + this.restaurantListOk.push(restaurant));
+    this.restaurantListNotOk.splice(this.restaurantListNotOk.indexOf(restaurant), 1);
+  }
 
-
+  cancelAddRestaurantInrestaurantListOk(restaurant){
+  console.log('ici le restau est : ' + restaurant.name);
+  console.log('dans ma console' + this.restaurantListNotOk.push(restaurant));
+  this.restaurantListNotOk.splice(this.restaurantListOk.indexOf(restaurant), 1);
+}
 
 }

@@ -9,12 +9,22 @@
 </tr>
 
 
-<tr *ngFor="let restaurant of restaurantList">
+<tr *ngFor="let restaurant of restaurantListNotOk">
 
   <td> {{restaurant.name}}</td>
 
   <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,dateOftheDay)}}</td>
+  <button id="validButton" (click)="addRestaurantInrestaurantListOk(restaurant)">OK</button>
 
 </tr>
+
+  <tr *ngFor="let restaurant of restaurantListOk">
+
+    <td> {{restaurant.name}}</td>
+
+    <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,dateOftheDay)}}</td>
+  <button id="cancelButton" (click)="cancelAddRestaurantInrestaurantListOk(restaurant)">Annuler</button>
+
+  </tr>
 
 </table>

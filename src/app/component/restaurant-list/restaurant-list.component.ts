@@ -12,8 +12,7 @@ export class RestaurantListComponent implements OnInit {
 
   commandsList;
   restaurantList;
-  commanda: Command;
-  date = '2020-03-30';
+   date = '2020-03-30';
 
 
   constructor(private restaurantService: RestaurantService, private commandService: CommandService) {

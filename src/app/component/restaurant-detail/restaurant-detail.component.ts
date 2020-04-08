@@ -38,20 +38,12 @@ export class RestaurantDetailComponent implements OnInit {
 
   ngOnInit() {
 
- /*   this.route.paramMap.subscribe(params => {
-      this.restaurantId = params.get('restaurantId');
-      this.restaurant = this.restaurantService.getRestaurantById(this.restaurantId);
-    });*/
 
     this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');
     this.restaurantService.getRestaurantById(this.restaurantId).subscribe(rep => {
           this.restaurant = rep;
     });
 
-/*
-    this.commandService.getCommandsByRestaurantId(this.restaurantId).subscribe(rep => {
-      this.commands = rep;
-    });*/
 
     this.commandService.getCommandsByRestaurantIdAndBetweenTwoDates(this.restaurantId, this.date, this.start, this.end).subscribe(rep => {
       this.commandsWeek = rep;
@@ -64,9 +56,38 @@ export class RestaurantDetailComponent implements OnInit {
   }
 
 
+  setTomorrowDay(date) {
+
+    switch (date.getDay()) {
+      case 0 :
+        return 'Lundi';
+        break;
+      case 1 :
+        return 'Mardi';
+        break;
+      case 2 :
+        return 'Mercredi';
+        break;
+      case 3 :
+        return 'Jeudi';
+        break;
+      case 4 :
+        return 'Vendredi';
+        break;
+      case 5 :
+        return 'Samedi';
+        break;
+      case 6 :
+        return 'Dimanche';
+        break;
+
+    }
+  }
+
+
   updateCommand(command, a) {
     console.log('entrer dans le update');
-    this.newCommand.id = command.id
+    this.newCommand.id = command.id;
     this.newCommand.date = command.date;
     this.newCommand.quantity = command.quantity + a;
     this.newCommand.restaurantId = this.restaurantId;

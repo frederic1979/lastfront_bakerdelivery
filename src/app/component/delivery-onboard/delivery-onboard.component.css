@@ -9,3 +9,14 @@ td {
 
 }
 
+#validButton{
+  background-color: forestgreen;
+  color: white;
+}
+
+
+#cancelButton{
+
+  background-color: red;
+  color: white;
+}
