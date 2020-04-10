@@ -4,8 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Restaurant} from '../../model/restaurant';
 import {CommandService} from '../../service/command.service';
 import {Command} from '../../model/command';
-import {Local} from 'protractor/built/driverProviders';
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-restaurant-detail',
@@ -16,16 +15,16 @@ export class RestaurantDetailComponent implements OnInit {
 
   restaurantId;
   restaurant: Restaurant = new Restaurant();
-  newCommand : Command = new Command();
+  newCommand: Command = new Command();
   commandsWeek;
-  date = null;
+  date = new Date();
   start = '2020-03-30';
   end = '2020-04-09';
 
 
+   myMoment: moment.Moment = moment(this.start);
 
-  a: number;
-
+  addOrSubQuantity: number;
 
   x: Date;
 
@@ -34,10 +33,14 @@ export class RestaurantDetailComponent implements OnInit {
   }
 
 
-
-
   ngOnInit() {
 
+    console.log('this.myMoment vau : :' + this.myMoment);
+    console.log('("MMM Do YY"); vaut : ' + this.myMoment.format('MMM Do YY'));
+    console.log('moment(this.start).format(\'MMM Do YY\')); vaut : ' + moment(this.start).locale('fr').format('MMM Do YY'));
+    console.log('jour de ma date : '+ moment(this.start).format('dddd'));
+    console.log(moment(this.start).locale('fr'));
+    console.log('jour de ma date en french : '+ moment(this.start).locale('fr').format('dddd'));
 
     this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');
     this.restaurantService.getRestaurantById(this.restaurantId).subscribe(rep => {
@@ -55,6 +58,9 @@ export class RestaurantDetailComponent implements OnInit {
 
   }
 
+  displayDay(date) {
+    return moment(date).locale('fr').format('dddd');
+  }
 
   setTomorrowDay(date) {
 
@@ -85,13 +91,13 @@ export class RestaurantDetailComponent implements OnInit {
   }
 
 
-  updateCommand(command, a) {
+  updateCommand(command: Command, addQuantity) {
 
     this.newCommand.id = command.id;
     this.newCommand.date = command.date;
-    this.newCommand.quantity = command.quantity + a;
+    this.newCommand.quantity = command.quantity + addQuantity;
     this.newCommand.restaurantId = this.restaurantId;
-    command.quantity = command.quantity + a;
+  /*  command.quantity = command.quantity + addQuantity;*/
 
     this.commandService.updateCommand(this.newCommand).subscribe(
       (response) => {

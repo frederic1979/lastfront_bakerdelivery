@@ -15,7 +15,7 @@ export class DeliveryOnboardComponent implements OnInit {
 
   restaurantList: Restaurant[] = new Array();
   restaurant: Restaurant = new Restaurant();
-  dateOftheDay = new Date();
+  dateOfTheDay = new Date();
   dateFormat;
   commandListOfTheDayAttente;
   commandListOfTheDayLivre;
@@ -26,7 +26,7 @@ export class DeliveryOnboardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.dateFormat = this.dateOftheDay.toISOString().slice(0, 10);
+    this.dateFormat = this.dateOfTheDay.toISOString().slice(0, 10);
 
     this.commandService.getCommandsByEtat('Attente', this.dateFormat).subscribe(rep => {
       this.commandListOfTheDayAttente = rep;
