@@ -10,7 +10,7 @@ import {Command} from '../../model/command';
 })
 export class RestaurantListComponent implements OnInit {
 
-  commandsList;
+  commandsList : Command[]=new Array();
   restaurantList;
    date = '2020-03-30';
 

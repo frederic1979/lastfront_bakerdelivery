@@ -16,8 +16,8 @@ export class RestaurantService {
     return this.httpClient.get<Restaurant>('http://localhost:8080/api/bakerdelivery/restaurants/' + restaurantId);
   }
 
-  getRestaurantList() {
-    return this.httpClient.get('http://localhost:8080/api/bakerdelivery/restaurants/');
+  getRestaurantList(): Observable<Restaurant[]> {
+    return this.httpClient.get<Restaurant[]>('http://localhost:8080/api/bakerdelivery/restaurants/');
   }
 
 

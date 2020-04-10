@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Command} from '../../model/command';
 import {RestaurantService} from '../../service/restaurant.service';
 import {CommandService} from '../../service/command.service';
@@ -13,27 +13,35 @@ import {Restaurant} from '../../model/restaurant';
 export class DeliveryOnboardComponent implements OnInit {
 
 
-  commandsList;
-  restaurantListNotOk;
-  restaurantListOk: Restaurant[] = new Array();
-  commanda: Command;
+  restaurantList: Restaurant[] = new Array();
+  restaurant: Restaurant = new Restaurant();
   dateOftheDay = new Date();
   dateFormat;
+  commandListOfTheDayAttente;
+  commandListOfTheDayLivre;
+
 
   constructor(private restaurantService: RestaurantService, private commandService: CommandService) {
   }
 
   ngOnInit() {
-    this.commandService.getCommands().subscribe(rep => {
-      this.commandsList = rep;
+
+    this.dateFormat = this.dateOftheDay.toISOString().slice(0, 10);
+
+    this.commandService.getCommandsByEtat('Attente', this.dateFormat).subscribe(rep => {
+      this.commandListOfTheDayAttente = rep;
+
+    });
+
+    this.commandService.getCommandsByEtat('Livree', this.dateFormat).subscribe(rep => {
+      this.commandListOfTheDayLivre = rep;
 
     });
 
     this.restaurantService.getRestaurantList().subscribe(rep => {
-      this.restaurantListNotOk = rep;
+      this.restaurantList = rep;
 
     });
-
   }
 
   setDayOfTheWeek(date) {
@@ -64,34 +72,50 @@ export class DeliveryOnboardComponent implements OnInit {
     }
   }
 
-
-  getQuantityCommandByRestauIdAndDate(restaurantId, date) {
-    this.dateFormat = date.toISOString().slice(0, 10);
-    for (const command of this.commandsList) {
-      console.log('egalité ?  : ' + command.date === this.dateFormat);
-      if (command.restaurantId === restaurantId && command.date === this.dateFormat) {
-        return command.quantity;
+  displayNameOfRestaurantId(restaurantId) {
+    for (const restaurant of this.restaurantList) {
+      if (restaurant.id === restaurantId) {
+        return restaurant.name;
       }
     }
   }
 
+  updateCommandDelivery(command) {
 
-  /*
-    goDownRestaurantInList(restaurantId){
-  this.restaurantListOk.add(restaurantI)
-    }
-  */
+    command.etat = 'Livree';
 
-  addRestaurantInrestaurantListOk(restaurant) {
-    console.log('ici le restau est : ' + restaurant.name);
-    console.log('dans ma console' + this.restaurantListOk.push(restaurant));
-    this.restaurantListNotOk.splice(this.restaurantListNotOk.indexOf(restaurant), 1);
+    this.commandService.updateCommand(command).subscribe(
+      (response) => {
+        this.ngOnInit();
+        console.log('resp :' + response);
+
+      }, (err) => {
+        console.log('erreur : ' + err);
+      },
+      () => {
+        console.log('finishing updating command');
+
+      }
+    );
   }
 
-  cancelAddRestaurantInrestaurantListOk(restaurant){
-  console.log('ici le restau est : ' + restaurant.name);
-  console.log('dans ma console' + this.restaurantListNotOk.push(restaurant));
-  this.restaurantListNotOk.splice(this.restaurantListOk.indexOf(restaurant), 1);
-}
+  cancelCommandDelivery(command) {
+    command.etat = 'Attente';
+
+    this.commandService.updateCommand(command).subscribe(
+      (response) => {
+        this.ngOnInit();
+        console.log('resp :' + response);
+
+      }, (err) => {
+        console.log('erreur : ' + err);
+      },
+      () => {
+        console.log('finishing updating command');
+
+      }
+    );
+  }
+
 
 }

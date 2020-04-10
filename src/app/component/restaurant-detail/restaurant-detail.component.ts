@@ -16,16 +16,16 @@ export class RestaurantDetailComponent implements OnInit {
 
   restaurantId;
   restaurant: Restaurant = new Restaurant();
-  commands ;
+  newCommand : Command = new Command();
   commandsWeek;
   date = null;
   start = '2020-03-30';
-  end = '2020-04-05';
+  end = '2020-04-09';
 
 
-  /*use for updateCommand()*/
+
   a: number;
-  newCommand: Command = new Command();
+
 
   x: Date;
 
@@ -86,13 +86,13 @@ export class RestaurantDetailComponent implements OnInit {
 
 
   updateCommand(command, a) {
-    console.log('entrer dans le update');
+
     this.newCommand.id = command.id;
     this.newCommand.date = command.date;
     this.newCommand.quantity = command.quantity + a;
     this.newCommand.restaurantId = this.restaurantId;
+    command.quantity = command.quantity + a;
 
-    console.log('la quantité est maintenant :' + this.newCommand.quantity);
     this.commandService.updateCommand(this.newCommand).subscribe(
       (response) => {
         console.log('resp :' + response);

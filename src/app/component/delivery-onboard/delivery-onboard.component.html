@@ -3,28 +3,31 @@
 <tr>
   <th>Restaurant</th>
   <th>{{setDayOfTheWeek(dateOftheDay)}}</th>
-
+  <th>Etat de la livraison</th>
 
 
 </tr>
 
 
-<tr *ngFor="let restaurant of restaurantListNotOk">
+  <tr *ngFor="let command of commandListOfTheDayAttente" >
 
-  <td> {{restaurant.name}}</td>
 
-  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,dateOftheDay)}}</td>
-  <button id="validButton" (click)="addRestaurantInrestaurantListOk(restaurant)">OK</button>
-
-</tr>
-
-  <tr *ngFor="let restaurant of restaurantListOk">
-
-    <td> {{restaurant.name}}</td>
-
-    <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,dateOftheDay)}}</td>
-  <button id="cancelButton" (click)="cancelAddRestaurantInrestaurantListOk(restaurant)">Annuler</button>
+    <td>{{displayNameOfRestaurantId(command.restaurantId)}}</td>
+    <td>{{command.quantity}}</td>
+    <td>{{command.etat}}</td>
+<button (click)="updateCommandDelivery(command)">OK</button>
 
   </tr>
+
+
+  <tr id="validButton"*ngFor="let command of commandListOfTheDayLivre" >
+
+
+    <td>{{displayNameOfRestaurantId(command.restaurantId)}}</td>
+    <td>{{command.quantity}}</td>
+    <td>{{command.etat}}</td>
+    <button (click)="cancelCommandDelivery(command)">Annuler</button>
+  </tr>
+
 
 </table>
