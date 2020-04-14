@@ -18,23 +18,28 @@ export class RestaurantDetailComponent implements OnInit {
   restaurant: Restaurant = new Restaurant();
   newCommand: Command = new Command();
   futurCommand: Command = new Command();
-  day;
 
-  dateToday = new Date();
+  /*Date end qui vaut  jourJ + 30*/
   end = moment().add(30, 'days').format('YYYY-MM-DD');
 
+
+  /*Date du jour au format 2020-04-13*/
   todayDate = moment().format('YYYY-MM-DD');
-  tomorowDate = moment(this.dateToday).add(1, 'days').format('YYYY-MM-DD');
+
+  /*Date de tomorrow au format 2020-04-14*/
+  tomorowDate = moment().add(1, 'days').format('YYYY-MM-DD');
+
+  /*Date de After tomorrow au format 2020-04-14*/
   afterTomorrowDate = moment(this.tomorowDate).add(1, 'days').format('YYYY-MM-DD');
+
+  /*Jour de tomorrowDay*/
   tomorrowDay = moment().locale('fr').add(1, 'days').format('dddd');
 
-  dueDate = moment().add(15, 'days').format('DD-MM-YYYY');
-  bool: boolean;
 
+  bool: boolean;
 
   addOrSubQuantity: number;
 
-  x: Date;
 
 
 
@@ -46,14 +51,17 @@ export class RestaurantDetailComponent implements OnInit {
   ngOnInit() {
 
     this.bool = false;
-    this.futurCommand.date = this.tomorowDate
+    this.futurCommand.date = this.tomorowDate;
 
+    /*On recup le restauraurantId de l url*/
     this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');
+
+    /*On charge le restaurant du restaurantId*/
     this.restaurantService.getRestaurantById(this.restaurantId).subscribe(rep => {
       this.restaurant = rep;
     });
 
-
+    /*On charge la commande du restaurantId à la date de tomorowDate*/
     this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, this.tomorowDate).subscribe(rep => {
       this.command = rep;
     });
@@ -90,17 +98,13 @@ export class RestaurantDetailComponent implements OnInit {
   }
 
 
-  dateTomorrow(date) {
-    return moment(date).add(1, 'days').format('YYYY-MM-DD');
-  }
-
   updateCommand(command: Command, addQuantity) {
 
     this.newCommand.id = command.id;
     this.newCommand.date = command.date;
     this.newCommand.quantity = command.quantity + addQuantity;
     this.newCommand.restaurantId = this.restaurantId;
-    /*  command.quantity = command.quantity + addQuantity;*/
+
 
     this.commandService.updateCommand(this.newCommand).subscribe(
       (response) => {
@@ -116,33 +120,8 @@ export class RestaurantDetailComponent implements OnInit {
     );
 
   }
-  dayDate(date) {
-    this.day = moment(date).locale('fr').format('dddd');
-  }
 
-  updateFuturCommand(command: Command, addQuantity) {
 
-    this.newCommand.id = command.id;
-    this.newCommand.date = command.date;
-    this.newCommand.quantity = command.quantity + addQuantity;
-    this.newCommand.restaurantId = this.restaurantId;
-    /*  command.quantity = command.quantity + addQuantity;*/
-
-    this.commandService.updateCommand(this.newCommand).subscribe(
-      (response) => {
-        console.log('resp :' + response);
-        console.log('Mon commandId est : ' + this.newCommand.id);
-        console.log('on est à : ' + this.newCommand.quantity);
-
-      }, (err) => {
-        console.log('erreur : ' + err);
-      },
-      () => {
-        console.log('end');
-      }
-    );
-
-  }
 }
 
 
