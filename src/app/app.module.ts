@@ -12,6 +12,7 @@ import { CreationCommandComponent } from './component/creation-command/creation-
 import {RestaurantDetailComponent} from './component/restaurant-detail/restaurant-detail.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { DeliveryOnboardComponent } from './component/delivery-onboard/delivery-onboard.component';
+import { FuturCommandComponent } from './component/futur-command/futur-command.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { DeliveryOnboardComponent } from './component/delivery-onboard/delivery-
     FooterComponent,
     RestaurantDetailComponent,
     CreationCommandComponent,
-    DeliveryOnboardComponent
+    DeliveryOnboardComponent,
+    FuturCommandComponent
   ],
   imports: [
     BrowserModule,
@@ -33,8 +35,8 @@ import { DeliveryOnboardComponent } from './component/delivery-onboard/delivery-
       {path: 'restaurants/:restaurantId', component: RestaurantDetailComponent},
       {path: 'creationCommand/:restaurantId', component: CreationCommandComponent},
       {path: 'onboard', component: DeliveryOnboardComponent},
-      /*  { path: 'director/:directorId', component: DirectorSheetComponent },
-   { path: 'addamovie', component: AddAMoviePageComponent }*/
+      {path: 'restaurants/:restaurantId/futurCommand/:commandId', component: FuturCommandComponent},
+
     ]),
     ReactiveFormsModule,
   ],

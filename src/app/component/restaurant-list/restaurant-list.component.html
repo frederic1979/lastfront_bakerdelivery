@@ -1,3 +1,7 @@
+
+<h3>Semaine N° {{numberOfTheWeek}}</h3>
+<h6>Du {{mondayOfTheWeek2}} au {{sundayOfTheWeek}}</h6>
+
 <tr>
   <th>Restaurant</th>
   <th>lundi </th>
@@ -7,6 +11,7 @@
   <th>vendredi </th>
   <th>samedi </th>
   <th>dimanche </th>
+  <th>TOTAL semaine</th>
 
 
 </tr>
@@ -16,14 +21,14 @@
 
   <td> {{restaurant.name}}</td>
 
-  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,'2020-04-06')}}</td>
-  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,'2020-04-07')}}</td>
-  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,'2020-04-08')}}</td>
-  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,'2020-04-09')}}</td>
-  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,'2020-04-10')}}</td>
-  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,'2020-04-11')}}</td>
-  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,'2020-04-12')}}</td>
-
+  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,mondayOfTheWeek)}}</td>
+  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,1))}}</td>
+  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,2))}}</td>
+  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,3))}}</td>
+  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,4))}}</td>
+  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,5))}}</td>
+  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,6))}}</td>
+  <td></td>
 </tr>
 
 

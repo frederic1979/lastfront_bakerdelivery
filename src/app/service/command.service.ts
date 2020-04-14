@@ -15,8 +15,26 @@ export class CommandService {
     return this.httpClient.get<Command[]>('http://localhost:8080/api/bakerdelivery/commands/');
   }
 
-  getCommandsByRestaurantId(restaurantId): Observable<Command> {
-    return this.httpClient.get<Command>('http://localhost:8080/api/bakerdelivery/commands/restaurant/' + restaurantId);
+  getCommandByCommandId(commandId): Observable<Command> {
+    return this.httpClient.get<Command>('http://localhost:8080/api/bakerdelivery/commands/' + commandId);
+  }
+
+  getCommandsByRestaurantId(restaurantId): Observable<Command[]> {
+    return this.httpClient.get<Command []>('http://localhost:8080/api/bakerdelivery/commands/restaurant/' + restaurantId);
+  }
+
+  getCommandByRestaurantIdAndDate(restaurantId, date): Observable<Command> {
+    return this.httpClient.get<Command>('http://localhost:8080/api/bakerdelivery/commands/restaurant/' + restaurantId + '?date=' + date);
+  }
+
+  getCommandsByRestaurantIdAndBetweenTwoDates(restaurantId, start, end): Observable<Command[]> {
+    // tslint:disable-next-line:max-line-length
+    return this.httpClient.get<Command[]>('http://localhost:8080/api/bakerdelivery/commands/restaurant/' + restaurantId + '/datesbetween?start=' + start + '&end=' + end);
+  }
+
+
+  getCommandsByEtat(etat, date) {
+    return this.httpClient.get('http://localhost:8080/api/bakerdelivery/commands/etat/' + etat + '?date=' + date);
   }
 
   addCommand(command): Observable<Command> {
@@ -26,23 +44,6 @@ export class CommandService {
   updateCommand(command) {
     return this.httpClient.put('http://localhost:8080/api/bakerdelivery/commands/' + command.id, command);
   }
-
-  getCommandsByRestaurantIdAndBetweenTwoDates(restaurantId, date, start, end) {
-    if (date === null && start === null && end === null) {
-      return this.httpClient.get('http://localhost:8080/api/bakerdelivery/commands/restaurant/' + restaurantId);
-    } else if (start === null && end === null) {
-      return this.httpClient.get('http://localhost:8080/api/bakerdelivery/commands/restaurant/' + 2 + '?date=' + date);
-    } else {
-      // tslint:disable-next-line:max-line-length
-      return this.httpClient.get('http://localhost:8080/api/bakerdelivery/commands/restaurant/' + restaurantId + '?start=' + start + '&end=' + end);
-    }
-
-  }
-
-  getCommandsByEtat(etat, date) {
-    return this.httpClient.get('http://localhost:8080/api/bakerdelivery/commands/etat/' + etat + '?date=' + date);
-  }
-
 
 
 }

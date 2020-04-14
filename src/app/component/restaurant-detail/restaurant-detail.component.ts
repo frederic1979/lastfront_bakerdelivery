@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RestaurantService} from '../../service/restaurant.service';
 import {ActivatedRoute} from '@angular/router';
 import {Restaurant} from '../../model/restaurant';
@@ -13,20 +13,30 @@ import * as moment from 'moment';
 })
 export class RestaurantDetailComponent implements OnInit {
 
+  command: Command = new Command();
   restaurantId;
   restaurant: Restaurant = new Restaurant();
   newCommand: Command = new Command();
-  commandsWeek;
-  date = new Date();
-  start = '2020-03-30';
-  end = '2020-04-09';
+  futurCommand: Command = new Command();
+  day;
 
+  dateToday = new Date();
+  end = moment().add(30, 'days').format('YYYY-MM-DD');
 
-   myMoment: moment.Moment = moment(this.start);
+  todayDate = moment().format('YYYY-MM-DD');
+  tomorowDate = moment(this.dateToday).add(1, 'days').format('YYYY-MM-DD');
+  afterTomorrowDate = moment(this.tomorowDate).add(1, 'days').format('YYYY-MM-DD');
+  tomorrowDay = moment().locale('fr').add(1, 'days').format('dddd');
+
+  dueDate = moment().add(15, 'days').format('DD-MM-YYYY');
+  bool: boolean;
+
 
   addOrSubQuantity: number;
 
   x: Date;
+
+
 
 
   constructor(private restaurantService: RestaurantService, private commandService: CommandService, private route: ActivatedRoute) {
@@ -35,61 +45,54 @@ export class RestaurantDetailComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('this.myMoment vau : :' + this.myMoment);
-    console.log('("MMM Do YY"); vaut : ' + this.myMoment.format('MMM Do YY'));
-    console.log('moment(this.start).format(\'MMM Do YY\')); vaut : ' + moment(this.start).locale('fr').format('MMM Do YY'));
-    console.log('jour de ma date : '+ moment(this.start).format('dddd'));
-    console.log(moment(this.start).locale('fr'));
-    console.log('jour de ma date en french : '+ moment(this.start).locale('fr').format('dddd'));
+    this.bool = false;
+    this.futurCommand.date = this.tomorowDate
 
     this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');
     this.restaurantService.getRestaurantById(this.restaurantId).subscribe(rep => {
-          this.restaurant = rep;
+      this.restaurant = rep;
     });
 
 
-    this.commandService.getCommandsByRestaurantIdAndBetweenTwoDates(this.restaurantId, this.date, this.start, this.end).subscribe(rep => {
-      this.commandsWeek = rep;
-
+    this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, this.tomorowDate).subscribe(rep => {
+      this.command = rep;
     });
 
-    this.x = new Date();
-    console.log(this.x);
 
   }
 
-  displayDay(date) {
-    return moment(date).locale('fr').format('dddd');
+  getCommandByRestaurantIdAndDate(date) {
+      // tslint:disable-next-line:max-line-length
+    this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, moment(date).add(1, 'days').format('YYYY-MM-DD')).subscribe(rep => {
+      this.futurCommand = rep;
+      this.bool = true;
+    });
   }
 
-  setTomorrowDay(date) {
-
-    switch (date.getDay()) {
-      case 0 :
-        return 'Lundi';
-        break;
-      case 1 :
-        return 'Mardi';
-        break;
-      case 2 :
-        return 'Mercredi';
-        break;
-      case 3 :
-        return 'Jeudi';
-        break;
-      case 4 :
-        return 'Vendredi';
-        break;
-      case 5 :
-        return 'Samedi';
-        break;
-      case 6 :
-        return 'Dimanche';
-        break;
-
+  pastCommandByRestaurantIdAndDate(date) {
+    // tslint:disable-next-line:max-line-length
+    if (date === this.afterTomorrowDate) {
+      this.bool = false;
+    } else {
+      // tslint:disable-next-line:max-line-length
+      this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, moment(date).subtract(1, 'days').format('YYYY-MM-DD')).subscribe(rep => {
+        this.futurCommand = rep;
+      });
     }
   }
 
+  displayDayOfDate(date) {
+    return moment(date).locale('fr').format('dddd');
+  }
+
+  displayFrenchDate(date) {
+    return moment(date).locale('fr').format('L');
+  }
+
+
+  dateTomorrow(date) {
+    return moment(date).add(1, 'days').format('YYYY-MM-DD');
+  }
 
   updateCommand(command: Command, addQuantity) {
 
@@ -97,7 +100,7 @@ export class RestaurantDetailComponent implements OnInit {
     this.newCommand.date = command.date;
     this.newCommand.quantity = command.quantity + addQuantity;
     this.newCommand.restaurantId = this.restaurantId;
-  /*  command.quantity = command.quantity + addQuantity;*/
+    /*  command.quantity = command.quantity + addQuantity;*/
 
     this.commandService.updateCommand(this.newCommand).subscribe(
       (response) => {
@@ -113,8 +116,33 @@ export class RestaurantDetailComponent implements OnInit {
     );
 
   }
+  dayDate(date) {
+    this.day = moment(date).locale('fr').format('dddd');
+  }
 
+  updateFuturCommand(command: Command, addQuantity) {
 
+    this.newCommand.id = command.id;
+    this.newCommand.date = command.date;
+    this.newCommand.quantity = command.quantity + addQuantity;
+    this.newCommand.restaurantId = this.restaurantId;
+    /*  command.quantity = command.quantity + addQuantity;*/
+
+    this.commandService.updateCommand(this.newCommand).subscribe(
+      (response) => {
+        console.log('resp :' + response);
+        console.log('Mon commandId est : ' + this.newCommand.id);
+        console.log('on est à : ' + this.newCommand.quantity);
+
+      }, (err) => {
+        console.log('erreur : ' + err);
+      },
+      () => {
+        console.log('end');
+      }
+    );
+
+  }
 }
 
 

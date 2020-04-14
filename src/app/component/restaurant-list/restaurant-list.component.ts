@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {RestaurantService} from '../../service/restaurant.service';
 import {CommandService} from '../../service/command.service';
 import {Command} from '../../model/command';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-restaurant-list',
@@ -10,9 +11,26 @@ import {Command} from '../../model/command';
 })
 export class RestaurantListComponent implements OnInit {
 
-  commandsList : Command[]=new Array();
+  lundi;
+  mardi;
+  mercredi;
+  jeudi;
+  vendredi;
+  samedi;
+  dimanche;
+
+  mondayOfTheWeek;
+  mondayOfTheWeek2;
+  sundayOfTheWeek;
+  sundayOfTheWeek2;
+
+
+  commandsListBetweenMondayAndSunday: Command[] = new Array();
+  commandsList: Command[] = new Array();
   restaurantList;
-   date = '2020-03-30';
+  date = new Date();
+  numberOfTheWeek;
+  total;
 
 
   constructor(private restaurantService: RestaurantService, private commandService: CommandService) {
@@ -30,7 +48,98 @@ export class RestaurantListComponent implements OnInit {
     });
 
 
+    this.numberOfTheWeek = moment().format('w');
+    this.findMondayOfTheWeek(this.date); // On obtient le mondayOfTheWeek
+    this.findSundayOfTheWeek(this.mondayOfTheWeek); // On obtient le sundayOfTheWeek
+    this.findMondayOfTheWeekInFrenchFormat(this.mondayOfTheWeek);
+    this.findSundayOfTheWeekInFrenchFormat(this.mondayOfTheWeek);
+
+    console.log('this.numberOfTheWeek(vaut : ' + this.numberOfTheWeek);
+
+
   }
+
+/*sumOfTheWeek(restaurantId){
+    this.getCommandsBetweenMondayAndSunday(restaurantId);
+    for (const command of this.commandsListBetweenMondayAndSunday){
+      this.total = this.total + command.quantity;
+    }
+    return this.total;
+}*/
+
+  findMondayOfTheWeek(date) {
+    switch (date.getDay()) {
+      case 0:
+
+        this.mondayOfTheWeek = moment(date).add(1, 'days').format('YYYY-MM-DD');
+        break;
+
+      case 1:
+
+        this.mondayOfTheWeek = moment(date).format('YYYY-MM-DD');
+        break;
+
+      case 2:
+
+        this.mondayOfTheWeek = moment(date).subtract(1, 'days').format('YYYY-MM-DD');
+        break;
+      case 3:
+
+        this.mondayOfTheWeek = moment(date).subtract(2, 'days').format('YYYY-MM-DD');
+        break;
+      case 4:
+
+        this.mondayOfTheWeek = moment(date).subtract(3, 'days').format('YYYY-MM-DD');
+        break;
+      case 5:
+
+        this.mondayOfTheWeek = moment(date).subtract(4, 'days').format('YYYY-MM-DD');
+        break;
+      case 6:
+
+        this.mondayOfTheWeek = moment(date).subtract(5, 'days').format('YYYY-MM-DD');
+        break;
+
+      default:
+
+    }
+  }
+
+
+  findSundayOfTheWeek(date) {
+    this.sundayOfTheWeek = moment().add(6, 'days').format('YYYY-MM-DD');
+  }
+
+  findMondayOfTheWeekInFrenchFormat(date) {
+    this.mondayOfTheWeek2 = moment(date).locale('fr').format('L');
+  }
+
+  findSundayOfTheWeekInFrenchFormat(date) {
+    this.sundayOfTheWeek2 = moment(date).locale('fr').format('L');
+  }
+
+  findOtherDayOfTheWeek(date, x) {
+    return moment(date).add(x, 'days').format('YYYY-MM-DD');
+  }
+
+/*
+  getCommandsBetweenMondayAndSunday(restaurantId){
+
+    this.commandService.getCommandsByRestaurantIdAndBetweenTwoDates(restaurantId, this.mondayOfTheWeek, this.sundayOfTheWeek).subscribe(
+      (response) => {
+        console.log('resp :' + response);
+        this.commandsListBetweenMondayAndSunday = response;
+
+      }, (err) => {
+        console.log('erreur : ' + err);
+      },
+      () => {
+        console.log('end');
+      }
+    );
+
+  }*/
+
 
   getQuantityCommandByRestauIdAndDate(restaurantId, date) {
     for (const command of this.commandsList) {

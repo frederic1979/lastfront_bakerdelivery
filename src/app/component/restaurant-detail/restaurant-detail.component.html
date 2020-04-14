@@ -1,36 +1,63 @@
 
-<div>
-  <ul>
-    <li>Identifiant Restaurateur : {{restaurant.id}}</li>
-    <li>Nom : {{restaurant.name}}</li>
-    <li>Adresse : {{restaurant.adresse}}</li>
-    <li>Mail : {{restaurant.email}}</li>
-  </ul>
+
+      <h2 id="title">{{restaurant.name}}</h2>
 
 
-</div>
 
-<a style="text-decoration:none" [routerLink]="['/creationCommand',restaurantId]" title="creation command">
+
+<!--<a style="text-decoration:none" [routerLink]="['/creationCommand',restaurantId]" title="creation command">
   <button class="button_connexion" type="submit">Nouvelle Commande</button>
-</a>
+</a>-->
 
-  <h2>COMMANDES</h2>
+  <h3>COMMANDES</h3>
+<!--
 <h3>Semaine du {{start}} au {{end}}</h3>
 
-    <div *ngFor="let command of commandsWeek">
+    <div *ngFor="let command of commandsMonth">
 
       <section id="liste_commandes">
-        <h5>Jour : {{x}} </h5>
+        <h5>Jour : &lt;!&ndash;{{displayTomorrowDay(command.date)}}&ndash;&gt; </h5>
       <h6>Identifiant Commande : {{command.id}}</h6>
       <h6>quantité : {{command.quantity}}</h6>
         <button class="buttonQuantity" (click)="updateCommand(command,addOrSubQuantity=-1)">-</button>
         <button class="buttonQuantity"(click)="updateCommand(command,addOrSubQuantity=1)">+</button>
-        <h6>{{displayDay(command.date)}}</h6>
+        <h6></h6>
         <h6>date : {{command.date}}</h6>
 
       </section>
 
     </div>
+
+-->
+
+
+      <button id="buttonLeft" *ngIf="futurCommand.date > tomorowDate"
+              (click)="pastCommandByRestaurantIdAndDate(futurCommand.date)">Retour
+      </button>
+      <button id="buttonRight" (click)="getCommandByRestaurantIdAndDate(futurCommand.date)">Jour suivant</button>
+
+      <section id="liste_commandes_futures" *ngIf="futurCommand.date>todayDate && bool===true">
+        <h5> {{displayFrenchDate(futurCommand.date)}} </h5>
+        <h4>Livraison du : {{displayDayOfDate(futurCommand.date)}} </h4>
+
+        <h3>{{futurCommand.quantity}} PAINS</h3>
+        <button id="buttonModifierQuantit" [routerLink]="['futurCommand',futurCommand.id]">MODIFIER LA QUANTITE</button>
+
+      </section>
+
+
+      <section *ngIf="bool===false" class="liste_commandes">
+        <h5>{{displayFrenchDate(command.date)}} </h5>
+        <h4 class="day">Livraison du : {{tomorrowDay}} </h4>
+
+        <h3>{{command.quantity}} PAINS</h3>
+        <button class="buttonQuantity" (click)="updateCommand(command,addOrSubQuantity=-1)">-</button>
+        <button class="buttonQuantity" (click)="updateCommand(command,addOrSubQuantity=1)">+</button>
+      </section>
+
+
+
+
 
 
 
