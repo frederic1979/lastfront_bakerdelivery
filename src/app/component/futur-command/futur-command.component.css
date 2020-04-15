@@ -18,3 +18,16 @@
   width: 50px;
   cursor: pointer;
 }
+
+#liste_commandes{
+  border: solid;
+  border-color: black;
+  margin-left: 38%;
+  margin-right: 38%;
+  background-color: sandybrown;
+
+}
+
+#day{
+  color: firebrick;
+}

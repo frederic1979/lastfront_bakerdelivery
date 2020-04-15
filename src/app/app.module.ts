@@ -14,6 +14,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { DeliveryOnboardComponent } from './component/delivery-onboard/delivery-onboard.component';
 import { FuturCommandComponent } from './component/futur-command/futur-command.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +25,8 @@ import { FuturCommandComponent } from './component/futur-command/futur-command.c
     RestaurantDetailComponent,
     CreationCommandComponent,
     DeliveryOnboardComponent,
-    FuturCommandComponent
+    FuturCommandComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -36,6 +38,7 @@ import { FuturCommandComponent } from './component/futur-command/futur-command.c
       {path: 'creationCommand/:restaurantId', component: CreationCommandComponent},
       {path: 'onboard', component: DeliveryOnboardComponent},
       {path: 'restaurants/:restaurantId/futurCommand/:commandId', component: FuturCommandComponent},
+      {path: 'restaurants/:restaurantId/futurCommand/:date', component: FuturCommandComponent},
 
     ]),
     ReactiveFormsModule,

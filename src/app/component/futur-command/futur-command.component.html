@@ -13,9 +13,10 @@
 
 <button id="buttonRight" [routerLink]="['/restaurants',restaurant.id]">Retour</button>
 
-<section id="futurCommande" >
+<section id="liste_commandes" >
 
-  <h5>{{dayDate(command.date)}} {{ displayFrenchDate(command.date)}} </h5>
+  <h5>{{ displayFrenchDate(command.date)}} </h5>
+  <h4 id="day">Livraison du : {{dayDate(command.date)}} </h4>
   <h3> {{ command.quantity}} PAINS</h3>
   <button class="buttonQuantity"(click)="updateCommand(command,-1)" >-</button>
   <button class="buttonQuantity" (click)="updateCommand(command,+1)" >+</button>

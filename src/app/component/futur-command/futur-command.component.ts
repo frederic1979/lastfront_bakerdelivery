@@ -32,16 +32,22 @@ export class FuturCommandComponent implements OnInit {
 
   ngOnInit() {
 
+    /*On top le commandId de URL*/
     this.commandId = this.route.snapshot.paramMap.get('commandId');
+
+    /*On top la date de URL*/
     this.date = this.route.snapshot.paramMap.get('date');
-    console.log('la commandId est: ' + this.commandId)
 
-
+    /*On top le restaurantId de URL*/
     this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');
+
+
+    /*On charge notre restaurant qui a restaurantId*/
     this.restaurantService.getRestaurantById(this.restaurantId).subscribe(rep => {
       this.restaurant = rep;
     });
 
+    /*On charge notre command qui a commandId*/
     this.commandService.getCommandByCommandId(this.commandId).subscribe(rep => {
       this.command = rep;
     });
@@ -65,6 +71,7 @@ export class FuturCommandComponent implements OnInit {
 
     }*/
 
+/*
   commandByDate(date) {
     this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, date).subscribe(
       (response) => {
@@ -85,6 +92,7 @@ export class FuturCommandComponent implements OnInit {
   dateTomorrow(date) {
     return moment(date).add(1, 'days').format('YYYY-MM-DD');
   }
+*/
 
 
   updateCommand(command: Command, addQuantity) {
@@ -93,7 +101,7 @@ export class FuturCommandComponent implements OnInit {
     this.newCommand.date = command.date;
     this.newCommand.quantity = command.quantity + addQuantity;
     this.newCommand.restaurantId = this.restaurantId;
-    /*  command.quantity = command.quantity + addQuantity;*/
+
 
     this.commandService.updateCommand(this.newCommand).subscribe(
       (response) => {

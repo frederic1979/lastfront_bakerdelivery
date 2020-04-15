@@ -11,13 +11,6 @@ import * as moment from 'moment';
 })
 export class RestaurantListComponent implements OnInit {
 
-  lundi;
-  mardi;
-  mercredi;
-  jeudi;
-  vendredi;
-  samedi;
-  dimanche;
 
   mondayOfTheWeek;
   mondayOfTheWeek2;
@@ -25,12 +18,11 @@ export class RestaurantListComponent implements OnInit {
   sundayOfTheWeek2;
 
 
-  commandsListBetweenMondayAndSunday: Command[] = new Array();
+
   commandsList: Command[] = new Array();
   restaurantList;
   date = new Date();
   numberOfTheWeek;
-  total;
 
 
   constructor(private restaurantService: RestaurantService, private commandService: CommandService) {
@@ -59,13 +51,6 @@ export class RestaurantListComponent implements OnInit {
 
   }
 
-/*sumOfTheWeek(restaurantId){
-    this.getCommandsBetweenMondayAndSunday(restaurantId);
-    for (const command of this.commandsListBetweenMondayAndSunday){
-      this.total = this.total + command.quantity;
-    }
-    return this.total;
-}*/
 
   findMondayOfTheWeek(date) {
     switch (date.getDay()) {
@@ -105,7 +90,6 @@ export class RestaurantListComponent implements OnInit {
     }
   }
 
-
   findSundayOfTheWeek(date) {
     this.sundayOfTheWeek = moment().add(6, 'days').format('YYYY-MM-DD');
   }
@@ -122,23 +106,6 @@ export class RestaurantListComponent implements OnInit {
     return moment(date).add(x, 'days').format('YYYY-MM-DD');
   }
 
-/*
-  getCommandsBetweenMondayAndSunday(restaurantId){
-
-    this.commandService.getCommandsByRestaurantIdAndBetweenTwoDates(restaurantId, this.mondayOfTheWeek, this.sundayOfTheWeek).subscribe(
-      (response) => {
-        console.log('resp :' + response);
-        this.commandsListBetweenMondayAndSunday = response;
-
-      }, (err) => {
-        console.log('erreur : ' + err);
-      },
-      () => {
-        console.log('end');
-      }
-    );
-
-  }*/
 
 
   getQuantityCommandByRestauIdAndDate(restaurantId, date) {
