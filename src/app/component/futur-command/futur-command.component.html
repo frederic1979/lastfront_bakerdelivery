@@ -13,13 +13,19 @@
 
 <button id="buttonRight" [routerLink]="['/restaurants',restaurant.id]">Retour</button>
 
-<section id="liste_commandes" >
+<section class="liste_commandes" >
 
   <h5>{{ displayFrenchDate(command.date)}} </h5>
   <h4 id="day">Livraison du : {{dayDate(command.date)}} </h4>
-  <h3> {{ command.quantity}} PAINS</h3>
-  <button class="buttonQuantity"(click)="updateCommand(command,-1)" >-</button>
-  <button class="buttonQuantity" (click)="updateCommand(command,+1)" >+</button>
+  <div>
+    <img src="../../assets/meule.jpg">
+  </div>
+
+  <div id="quantityBloc">
+  <button id = "circleButtonMoins"(click)="updateCommand(command,-1)" >-</button>
+  <h3 id="quantityNumber"> {{ command.quantity}}</h3>
+  <button id="circleButtonPlus" (click)="updateCommand(command,+1)" >+</button>
+  </div>
 </section>
 
 

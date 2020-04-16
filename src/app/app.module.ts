@@ -13,6 +13,7 @@ import {RestaurantDetailComponent} from './component/restaurant-detail/restauran
 import {ReactiveFormsModule} from '@angular/forms';
 import { DeliveryOnboardComponent } from './component/delivery-onboard/delivery-onboard.component';
 import { FuturCommandComponent } from './component/futur-command/futur-command.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { FuturCommandComponent } from './component/futur-command/futur-command.c
 
     ]),
     ReactiveFormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

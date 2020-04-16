@@ -2,6 +2,7 @@
 
 td,th {
   border: solid;
+  border-width: 1px;
 }
 
 

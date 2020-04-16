@@ -7,46 +7,40 @@
   <h3>COMMANDES</h3>
 
 
-      <!--Ma section pour choisir une autre livraison dans la semaine-->
+      <section class="liste_commandes">
 
-      <!--<button id="buttonLeft" *ngIf="futurCommand.date > tomorowDate"
-              (click)="pastCommandByRestaurantIdAndDate(futurCommand.date)">Retour
-      </button>-->
-      <!--<button id="buttonRight" (click)="getCommandByRestaurantIdAndDate(futurCommand.date)">Jour suivant</button>
--->
+        <h4 class="day">{{tomorrowDay}} {{displayNumberDay(command.date)}} {{displayMonth(command.date)}} </h4>
 
-      <button id="orangeButton"  *ngFor="let futurCommand of commandsListOfTheWeek" [routerLink]="['futurCommand',futurCommand.id]">{{displayDayOfDate(futurCommand.date)}}</button>
-
-      <button (click)="getNextWeek()">>></button>
-
-        <!--
-      <section id="liste_commandes_futures" *ngIf="futurCommand.date>todayDate && bool===true">
-        <h5> {{displayFrenchDate(futurCommand.date)}} </h5>
-        <h4>Livraison du : {{displayDayOfDate(futurCommand.date)}} </h4>
-
-        <h3>{{futurCommand.quantity}} PAINS</h3>
-        <button id="buttonModifierQuantit" [routerLink]="['futurCommand',futurCommand.id]">MODIFIER LA QUANTITE</button>
-      </section>-->
+        <div>
+          <img src="../../assets/meule.jpg">
+        </div>
 
 
-      <!--Ma section pour la livraison du lendemain-->
+        <div id="quantityBloc">
 
-      <section *ngIf="bool===false" class="liste_commandes">
+        <button id="circleButtonMoins" (click)="updateCommand(command,addOrSubQuantity=-1)">-</button>
 
-        <h4 class="day">{{tomorrowDay}} {{displayFrenchDate(command.date)}} </h4>
 
-        <h5 class="day">Quantité</h5>
-        <div id="quantity">
-        <button class="circleButton" (click)="updateCommand(command,addOrSubQuantity=-1)">-</button>
-        <h3 id="quantityNumber">{{command.quantity}} </h3>
-        <button class="circleButton" (click)="updateCommand(command,addOrSubQuantity=1)">+</button>
+
+        <h1 id="quantityNumber">{{command.quantity}} </h1>
+
+          <button id="circleButtonPlus" (click)="updateCommand(command,addOrSubQuantity=1)">+</button>
+
+
         </div>
 
       </section>
 
 
+    <!--le bloc des prochains jours de la semaine-->
 
+    <div id="bloc" *ngFor="let futurCommand of commandsListOfTheWeek" [routerLink]="['futurCommand',futurCommand.id]">
+      <button id="weekDayButton" *ngIf="futurCommand.date > tomorowDate">
+        {{displayThreeCharacterDay(futurCommand.date)}}{{displayDateDayMonth(futurCommand.date)}}
+      </button>
+    </div>
 
+      <button (click)="getNextWeek()">>></button>
 
 
 

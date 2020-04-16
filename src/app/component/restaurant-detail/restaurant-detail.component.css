@@ -2,16 +2,15 @@ li {
   list-style-type: none;
 }
 
-#title{
-  color: saddlebrown;
-}
 
-.liste_commandes{
-  border: solid;
-  border-color: black;
+
+.liste_commandes {
+  border : solid;
+  border-width:1px;
+  border-color: gray;
   margin-left: 38%;
   margin-right: 38%;
-  background-color: #4CAF50;;
+  background-color: white;
 
 }
 
@@ -31,39 +30,77 @@ li {
   margin-right: 44%;
 }
 
-/*
-#buttonLeft{
-  margin-right: 5%;
-}
-*/
 
-#quantity{
+#quantityBloc{
   display: flex;
+  justify-content: center;
+  margin-bottom: 20%;
 
 }
 
 #quantityNumber{
-  color: white;
+  font-size: 60px;
+  margin-top: 2%;
+  color: #ff6955;
 }
 
-.circleButton{
-background-color: white; /* Green */
+#circleButtonMoins  {
+
+  box-shadow: 4px 4px 18px 2px rgba(0, 0, 0, 0.3);
+background-color: whitesmoke;
 border: none;
-color: #4CAF50;;
-padding: 20px;
+color: black;
+padding: 10px;
 text-align: center;
 text-decoration: none;
 display: inline-block;
-font-size: 30px;
-margin: 4px 2px;
+font-size: 60px;
+  margin-right: 7%;
 cursor: pointer;
-border-radius: 50%;
+border-radius: 40%;
+  height: 10%;
+  width: 20%;
+
+  position: relative;
+  top: 0px;
+  transition: all ease 0.3s;
 }
 
-#buttonModifierQuantit{
-  background-color: orangered;
-  color: whitesmoke;
+#circleButtonMoins:active{
+  box-shadow: 0 3px 0 lightgray;
+  top: 3px;
 }
+
+
+#circleButtonPlus  {
+
+  box-shadow: 4px 4px 18px 2px rgba(0, 0, 0, 0.3);
+  background-color: whitesmoke;
+  border: none;
+  color: black;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 60px;
+  margin-left: 7%;
+  cursor: pointer;
+  border-radius: 40%;
+  height: 10%;
+  width: 20%;
+
+
+  position: relative;
+  top: 0px;
+  transition: all ease 0.3s;
+
+}
+
+#circleButtonPlus:active {
+   box-shadow: 0 3px 0 lightgray;
+   top: 3px;
+ }
+
 
 .buttonQuantity{
   border: solid;
@@ -74,10 +111,23 @@ border-radius: 50%;
 }
 
 .day{
-  color: white;
+  color: #3d3d3d;
 }
 
-#orangeButton{
-  background-color: #4CAF50;;
-  color: whitesmoke;
+#weekDayButton{
+  font-family: Arial, Helvetica, sans-serif;
+  height: 5%;
+  box-shadow: 4px 4px 18px 2px rgba(0, 0, 0, 0.3);
+  background-color: whitesmoke;;
+  color: black;
+  outline-width: thin;
 }
+
+#bloc{
+
+  display: inline-block;
+  justify-content: center;
+  padding-top: 40px;
+}
+
+

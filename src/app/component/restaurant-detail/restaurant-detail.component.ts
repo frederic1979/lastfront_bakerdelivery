@@ -39,9 +39,7 @@ export class RestaurantDetailComponent implements OnInit {
   x: Command = new Command();
   y: Command = new Command();
 
-  bool: boolean;
-
-  addOrSubQuantity: number;
+    addOrSubQuantity: number;
 
   date = new Date();
   mondayOfTheWeek;
@@ -60,7 +58,7 @@ export class RestaurantDetailComponent implements OnInit {
 
   ngOnInit() {
 
-    this.bool = false;
+
     this.futurCommand.date = this.tomorowDate;
 
     /*On recup le restauraurantId de l url*/
@@ -88,12 +86,6 @@ export class RestaurantDetailComponent implements OnInit {
         this.commandsListOfTheWeek = rep;
       });
     }
-
-
-
-    console.log(this.newCommandsListOfTheWeek.length);
-
-
   }
 
   getNextWeek() {
@@ -113,7 +105,7 @@ export class RestaurantDetailComponent implements OnInit {
     switch (date.getDay()) {
       case 0:
 
-        this.mondayOfTheWeek = moment(date).add(1, 'days').format('YYYY-MM-DD');
+        this.mondayOfTheWeek = moment(date).subtract(6, 'days').format('YYYY-MM-DD');
         break;
 
       case 1:
@@ -148,7 +140,7 @@ export class RestaurantDetailComponent implements OnInit {
   }
 
   findSundayOfTheWeek(date) {
-    this.sundayOfTheWeek = moment().add(4, 'days').format('YYYY-MM-DD');
+    this.sundayOfTheWeek = moment(this.todayDate).add(3, 'days').format('YYYY-MM-DD');
   }
 
   findMondayOfTheWeekInFrenchFormat(date) {
@@ -163,7 +155,7 @@ export class RestaurantDetailComponent implements OnInit {
   pastCommandByRestaurantIdAndDate(date) {
     // tslint:disable-next-line:max-line-length
     if (date === this.afterTomorrowDate) {
-      this.bool = false;
+      /*this.bool = false;*/
     } else {
       // tslint:disable-next-line:max-line-length
       this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, moment(date).subtract(1, 'days').format('YYYY-MM-DD')).subscribe(rep => {
@@ -172,16 +164,26 @@ export class RestaurantDetailComponent implements OnInit {
     }
   }
 
-  displayDayOfDate(date) {
+  displayDateDayMonth(date) {
 
     return moment(date).locale('fr').format('DD-MM');
     /*return moment(date).locale('fr').format('dddd').substr(0, 2);*/
   }
 
-  displayFrenchDate(date) {
-    return moment(date).locale('fr').format('L');
+
+  displayMonth(date) {
+
+    return moment(date).locale('fr').format('MMMM');
+    /*return moment(date).locale('fr').format('dddd').substr(0, 2);*/
   }
 
+  displayNumberDay(date) {
+    return moment(date).locale('fr').format('DD');
+  }
+
+  displayThreeCharacterDay(date) {
+    return moment(date).locale('fr').format('ddd');
+  }
 
   updateCommand(command: Command, addQuantity) {
 
