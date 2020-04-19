@@ -7,28 +7,23 @@
   <h3>COMMANDES</h3>
 
 
+      <!-- bloc du lendemain-->
       <section class="liste_commandes">
-
         <h4 class="day">{{tomorrowDay}} {{displayNumberDay(command.date)}} {{displayMonth(command.date)}} </h4>
 
         <div>
           <img src="../../assets/meule.jpg">
         </div>
 
-
         <div id="quantityBloc">
+          <!--boutton moins-->
+          <button id="circleButtonMoins" (click)="updateCommand(command,addOrSubQuantity=-1)">-</button>
+          <h1 id="quantityNumber">{{command.quantity}} </h1>
+          <h1 >côté matrix : {{lastMatrix.mondayQuantity}} </h1>
 
-        <button id="circleButtonMoins" (click)="updateCommand(command,addOrSubQuantity=-1)">-</button>
-
-
-
-        <h1 id="quantityNumber">{{command.quantity}} </h1>
-
+          <!--bouton plus-->
           <button id="circleButtonPlus" (click)="updateCommand(command,addOrSubQuantity=1)">+</button>
-
-
         </div>
-
       </section>
 
 
@@ -41,6 +36,4 @@
     </div>
 
       <button (click)="getNextWeek()">>></button>
-
-
 

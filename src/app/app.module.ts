@@ -14,6 +14,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { DeliveryOnboardComponent } from './component/delivery-onboard/delivery-onboard.component';
 import { FuturCommandComponent } from './component/futur-command/futur-command.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDatepickerModule, MatFormFieldModule, MatIconModule, MatMenuModule, MatSliderModule, MatTableModule} from '@angular/material';
 
 
 @NgModule({
@@ -44,6 +45,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ]),
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatTableModule,
+    MatSliderModule,
+    MatDatepickerModule,
+    MatIconModule,
+    MatMenuModule,
+    MatFormFieldModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]

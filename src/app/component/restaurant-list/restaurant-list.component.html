@@ -1,5 +1,5 @@
 
-<h3>Semaine N° {{numberOfTheWeek}}</h3>
+<h3>Semaine N° {{numberOfActualWeek}}</h3>
 <h6>Du {{mondayOfTheWeek2}} au {{sundayOfTheWeek}}</h6>
 
 <tr>
@@ -33,3 +33,17 @@
 
 
 
+
+<tr *ngFor="let matrix of matrixList">
+
+  <td>{{matrix.restaurantId}}</td>
+  <td>{{matrix.mondayQuantity}}</td>
+  <td>{{matrix.tuesdayQuantity}}</td>
+  <td>{{matrix.wednesdayQuantity}}</td>
+  <td>{{matrix.thursdayQuantity}}</td>
+  <td>{{matrix.fridayQuantity}}</td>
+  <td>{{matrix.saturdayQuantity}}</td>
+  <td>{{matrix.sundayQuantity}}</td>
+
+
+</tr>

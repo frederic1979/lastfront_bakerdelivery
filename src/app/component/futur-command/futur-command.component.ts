@@ -5,6 +5,8 @@ import {RestaurantService} from '../../service/restaurant.service';
 import {Restaurant} from '../../model/restaurant';
 import {Command} from '../../model/command';
 import * as moment from 'moment';
+import {Matrix} from '../../model/matrix';
+import {MatrixService} from '../../service/matrix.service';
 
 @Component({
   selector: 'app-futur-command',
@@ -22,11 +24,12 @@ export class FuturCommandComponent implements OnInit {
   command: Command = new Command();
   newCommand: Command = new Command();
 
+  newMatrix: Matrix = new Matrix();
 
   startDate = moment().add(2, 'days').format('YYYY-MM-DD');
   endDate = moment().add(15, 'days').format('YYYY-MM-DD');
 
-  constructor(private commandService: CommandService, private restaurantService: RestaurantService, private route: ActivatedRoute) {
+  constructor(private commandService: CommandService, private restaurantService: RestaurantService, private matrixService: MatrixService, private route: ActivatedRoute) {
   }
 
 
@@ -61,39 +64,6 @@ export class FuturCommandComponent implements OnInit {
     return moment(date).locale('fr').format('L');
   }
 
-  /*  addOneDay(date) {
-      return moment(date).add(1, 'days').format('YYYY-MM-DD');
-    }*/
-
-  /*  passDay(x, y) {
-      x = x + 1; console.log(x);
-      y = y + 1; console.log(y);
-
-    }*/
-
-/*
-  commandByDate(date) {
-    this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, date).subscribe(
-      (response) => {
-        console.log('resp :' + response);
-        this.command = response;
-        return this.command;
-
-      }, (err) => {
-        console.log('erreur : ' + err);
-      },
-      () => {
-        console.log('end');
-      }
-    );
-
-  }
-
-  dateTomorrow(date) {
-    return moment(date).add(1, 'days').format('YYYY-MM-DD');
-  }
-*/
-
 
   updateCommand(command: Command, addQuantity) {
 
@@ -102,9 +72,24 @@ export class FuturCommandComponent implements OnInit {
     this.newCommand.quantity = command.quantity + addQuantity;
     this.newCommand.restaurantId = this.restaurantId;
 
+    this.newMatrix.restaurantId =  this.restaurantId;
+    this.newMatrix.startDate = '';
+    this.newMatrix.endDate = '';
+    this.newMatrix.mondayQuantity = 0;
+    this.newMatrix.tuesdayQuantity = 0;
+    this.newMatrix.wednesdayQuantity = 0;
+    this.newMatrix.thursdayQuantity = 0;
+    this.newMatrix.fridayQuantity = 0;
+    this.newMatrix.saturdayQuantity = 0;
+    this.newMatrix.sundayQuantity = 0;
 
     this.commandService.updateCommand(this.newCommand).subscribe(
       (response) => {
+
+
+        this.matrixService.createMatrix(this.newMatrix).subscribe(rep => {
+        });
+
         console.log('resp :' + response);
         this.ngOnInit();
 

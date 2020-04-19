@@ -5,6 +5,8 @@ import {Restaurant} from '../../model/restaurant';
 import {CommandService} from '../../service/command.service';
 import {Command} from '../../model/command';
 import * as moment from 'moment';
+import {MatrixService} from '../../service/matrix.service';
+import {Matrix} from '../../model/matrix';
 
 @Component({
   selector: 'app-restaurant-detail',
@@ -18,7 +20,7 @@ export class RestaurantDetailComponent implements OnInit {
   restaurant: Restaurant = new Restaurant();
   newCommand: Command = new Command();
   futurCommand: Command = new Command();
-  testCommand2: Command = new Command();
+
 
   /*Date end qui vaut  jourJ + 30*/
   end = moment().add(30, 'days').format('YYYY-MM-DD');
@@ -38,6 +40,7 @@ export class RestaurantDetailComponent implements OnInit {
 
   x: Command = new Command();
   y: Command = new Command();
+  z: Command = new Command();
 
     addOrSubQuantity: number;
 
@@ -47,12 +50,16 @@ export class RestaurantDetailComponent implements OnInit {
   sundayOfTheWeek;
   sundayOfTheWeek2;
 
+
+  newMatrix: Matrix = new Matrix();
+  lastMatrix: Matrix = new Matrix();
+
   commandsListOfTheWeek: Command[] = new Array();
   newCommandsListOfTheWeek: Command[] = new Array();
-  testCommandsListOfTheWeek: Command[] = new Array();
 
 
-  constructor(private restaurantService: RestaurantService, private commandService: CommandService, private route: ActivatedRoute) {
+
+  constructor(private restaurantService: RestaurantService, private commandService: CommandService, private matrixService: MatrixService, private route: ActivatedRoute) {
   }
 
 
@@ -75,6 +82,7 @@ export class RestaurantDetailComponent implements OnInit {
     });
 
 
+
     this.findMondayOfTheWeek(this.date); // On obtient le mondayOfTheWeek
     this.findSundayOfTheWeek(this.mondayOfTheWeek); // On obtient le sundayOfTheWeek
     this.findMondayOfTheWeekInFrenchFormat(this.mondayOfTheWeek);
@@ -86,7 +94,19 @@ export class RestaurantDetailComponent implements OnInit {
         this.commandsListOfTheWeek = rep;
       });
     }
+
+    /*On charge la derniere matrix avec endDate à null*/
+
+    this.matrixService.getMatrixByRestaurantIdAndEndDate(this.restaurantId, '').subscribe(rep => {
+        this.lastMatrix = rep;
+
+      });
+
+
+    this.getQuantityByRestaurantIdAndDate(this.todayDate);
+
   }
+
 
   getNextWeek() {
     for (const command of this.commandsListOfTheWeek) {
@@ -152,17 +172,6 @@ export class RestaurantDetailComponent implements OnInit {
   }
 
 
-  pastCommandByRestaurantIdAndDate(date) {
-    // tslint:disable-next-line:max-line-length
-    if (date === this.afterTomorrowDate) {
-      /*this.bool = false;*/
-    } else {
-      // tslint:disable-next-line:max-line-length
-      this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, moment(date).subtract(1, 'days').format('YYYY-MM-DD')).subscribe(rep => {
-        this.futurCommand = rep;
-      });
-    }
-  }
 
   displayDateDayMonth(date) {
 
@@ -185,6 +194,91 @@ export class RestaurantDetailComponent implements OnInit {
     return moment(date).locale('fr').format('ddd');
   }
 
+
+  getQuantityByRestaurantIdAndDate(date) {
+    this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, date).subscribe(rep => {
+      this.z = rep;
+
+    });
+    return this.z.quantity;
+  }
+
+
+  createNewMatrix(newCommand) {
+    /*this.newMatrix = this.lastMatrix;*/
+    this.newMatrix.restaurantId = this.restaurantId;
+    this.newMatrix.startDate = this.todayDate;
+    this.newMatrix.endDate = '';
+
+    this.newMatrix.mondayQuantity = this.lastMatrix.mondayQuantity;
+    this.newMatrix.tuesdayQuantity = this.lastMatrix.tuesdayQuantity;
+    this.newMatrix.wednesdayQuantity = this.lastMatrix.wednesdayQuantity;
+    this.newMatrix.thursdayQuantity = this.lastMatrix.thursdayQuantity;
+    this.newMatrix.fridayQuantity = this.lastMatrix.fridayQuantity;
+    this.newMatrix.saturdayQuantity = this.lastMatrix.saturdayQuantity;
+    this.newMatrix.sundayQuantity = this.lastMatrix.sundayQuantity;
+
+
+    switch (this.date.getDay()) {
+      case 0:
+
+        this.newMatrix.mondayQuantity = newCommand.quantity;
+        break;
+      case 1:
+
+        this.newMatrix.tuesdayQuantity = newCommand.quantity;
+        break;
+
+      case 2:
+
+        this.newMatrix.wednesdayQuantity = newCommand.quantity;
+        break;
+      case 3:
+
+        this.newMatrix.thursdayQuantity = newCommand.quantity;
+        break;
+      case 4:
+
+        this.newMatrix.fridayQuantity = newCommand.quantity;
+        break;
+      case 5:
+
+        this.newMatrix.saturdayQuantity = newCommand.quantity;
+        break;
+      case 6:
+
+        this.newMatrix.sundayQuantity = newCommand.quantity;
+
+        break;
+
+
+    }
+
+
+    this.lastMatrix.endDate = this.todayDate;
+    this.matrixService.updateMatrix(this.lastMatrix).subscribe(rep => {
+    });
+
+    this.matrixService.createMatrix(this.newMatrix).subscribe(rep => {
+           this.newMatrix = rep;
+    });
+
+
+/*    if (this.newMatrix !== this.lastMatrix) {
+    this.matrixService.createMatrix(this.newMatrix).subscribe(rep => {
+      this.newMatrix = rep;
+    });
+    } else {
+      this.matrixService.updateMatrix(this.newMatrix).subscribe(rep => {
+      });
+    }
+    this.lastMatrix.endDate = '2000-01-01';
+    this.newMatrix.endDate = '';
+    this.matrixService.updateMatrix(this.lastMatrix).subscribe(rep => {
+    });*/
+
+  }
+
   updateCommand(command: Command, addQuantity) {
 
     this.newCommand.id = command.id;
@@ -196,8 +290,9 @@ export class RestaurantDetailComponent implements OnInit {
     this.commandService.updateCommand(this.newCommand).subscribe(
       (response) => {
         console.log('resp :' + response);
-        this.ngOnInit();
+        this.createNewMatrix(this.newCommand);
 
+        this.ngOnInit();
       }, (err) => {
         console.log('erreur : ' + err);
       },
@@ -207,6 +302,8 @@ export class RestaurantDetailComponent implements OnInit {
     );
 
   }
+
+
 
 
 }

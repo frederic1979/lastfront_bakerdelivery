@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {RestaurantService} from '../../service/restaurant.service';
 import {CommandService} from '../../service/command.service';
 import {Command} from '../../model/command';
 import * as moment from 'moment';
+import {Restaurant} from '../../model/restaurant';
+import {MatrixService} from '../../service/matrix.service';
+import {Matrix} from '../../model/matrix';
+
 
 @Component({
   selector: 'app-restaurant-list',
@@ -12,44 +16,60 @@ import * as moment from 'moment';
 export class RestaurantListComponent implements OnInit {
 
 
+  displayedColumns: string[] = ['position', 'name'];
+
+
   mondayOfTheWeek;
   mondayOfTheWeek2;
   sundayOfTheWeek;
   sundayOfTheWeek2;
 
 
-
+  matrixList: Matrix[] = new Array();
   commandsList: Command[] = new Array();
-  restaurantList;
+  restaurantList: Restaurant[] = new Array();
   date = new Date();
-  numberOfTheWeek;
+  numberOfActualWeek;
 
 
-  constructor(private restaurantService: RestaurantService, private commandService: CommandService) {
+  constructor(private restaurantService: RestaurantService, private commandService: CommandService, private matrixService : MatrixService) {
   }
 
+
   ngOnInit() {
-    this.commandService.getCommands().subscribe(rep => {
-      this.commandsList = rep;
+    /*On ne recharge la commandList seulement si elle est vide*/
+    if (this.commandsList.length === 0) {
+      this.commandService.getCommands().subscribe(rep => {
+        this.commandsList = rep;
+
+      });
+    }
+
+    /*On ne recharge la restaurantList seulement si elle est vide*/
+    if (this.restaurantList.length === 0) {
+      this.restaurantService.getRestaurantList().subscribe(rep => {
+          this.restaurantList = rep;
+        }
+      );
+    }
+
+    this.matrixService.getMatrix().subscribe(rep => {
+      this.matrixList = rep;
 
     });
 
-    this.restaurantService.getRestaurantList().subscribe(rep => {
-      this.restaurantList = rep;
 
-    });
-
-
-    this.numberOfTheWeek = moment().format('w');
+    this.numberOfActualWeek = moment().format('w');
     this.findMondayOfTheWeek(this.date); // On obtient le mondayOfTheWeek
     this.findSundayOfTheWeek(this.mondayOfTheWeek); // On obtient le sundayOfTheWeek
     this.findMondayOfTheWeekInFrenchFormat(this.mondayOfTheWeek);
     this.findSundayOfTheWeekInFrenchFormat(this.mondayOfTheWeek);
 
-    console.log('this.numberOfTheWeek(vaut : ' + this.numberOfTheWeek);
-
-
   }
+
+findNextNumberWeek(){
+    return moment().add(1, 'week').format('w');
+}
 
 
   findMondayOfTheWeek(date) {
@@ -105,7 +125,6 @@ export class RestaurantListComponent implements OnInit {
   findOtherDayOfTheWeek(date, x) {
     return moment(date).add(x, 'days').format('YYYY-MM-DD');
   }
-
 
 
   getQuantityCommandByRestauIdAndDate(restaurantId, date) {
