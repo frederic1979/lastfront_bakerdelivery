@@ -17,6 +17,7 @@ export class FuturCommandComponent implements OnInit {
 
   day;
   date;
+  todayDate = moment().format('YYYY-MM-DD');
   commandId;
   restaurantId;
   restaurant = new Restaurant();
@@ -24,11 +25,13 @@ export class FuturCommandComponent implements OnInit {
   command: Command = new Command();
   newCommand: Command = new Command();
 
+  lastMatrix: Matrix = new Matrix();
   newMatrix: Matrix = new Matrix();
+  matrixTab: Matrix[] = new Array();
 
   startDate = moment().add(2, 'days').format('YYYY-MM-DD');
   endDate = moment().add(15, 'days').format('YYYY-MM-DD');
-
+  ndate;
   constructor(private commandService: CommandService, private restaurantService: RestaurantService, private matrixService: MatrixService, private route: ActivatedRoute) {
   }
 
@@ -40,6 +43,7 @@ export class FuturCommandComponent implements OnInit {
 
     /*On top la date de URL*/
     this.date = this.route.snapshot.paramMap.get('date');
+    this.ndate = new Date(this.date);
 
     /*On top le restaurantId de URL*/
     this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');
@@ -54,6 +58,28 @@ export class FuturCommandComponent implements OnInit {
     this.commandService.getCommandByCommandId(this.commandId).subscribe(rep => {
       this.command = rep;
     });
+
+
+    this.matrixService.getMatrixByRestaurantIdAndEndDateNullAndStartDateBetweenBeginAndFinish(this.restaurantId, '2020-01-01', this.date).subscribe(rep => {
+
+      if (this.matrixTab.length !== 0) {
+        console.log('on est dans le 2nd tour ?');
+        this.matrixTab.splice(0);
+        this.lastMatrix = rep;
+        /*on affecte id de last à la new*/
+        this.newMatrix.id = this.lastMatrix.id;
+
+      } else {
+        console.log('on est dans le 1er tour ?');
+        this.lastMatrix = rep;
+        this.getDayQuantity();
+      }
+    });
+
+
+
+
+
   }
 
   dayDate(date) {
@@ -65,6 +91,111 @@ export class FuturCommandComponent implements OnInit {
   }
 
 
+
+  getDayQuantity(): number {
+    switch (this.ndate.getDay()) {
+      case 0:
+
+        return this.lastMatrix.mondayQuantity;
+        break;
+      case 1:
+
+        return this.lastMatrix.tuesdayQuantity;
+        break;
+
+      case 2:
+
+        return this.lastMatrix.wednesdayQuantity;
+        break;
+      case 3:
+
+        return this.lastMatrix.thursdayQuantity;
+        break;
+      case 4:
+
+        return this.lastMatrix.fridayQuantity;
+        break;
+      case 5:
+
+        return this.lastMatrix.saturdayQuantity;
+        break;
+      case 6:
+
+        return this.lastMatrix.sundayQuantity;
+
+        break;
+
+    }
+  }
+
+
+
+  updateMatrix(addOrSubQuantity) {
+
+    this.newMatrix.restaurantId = this.restaurantId;
+    this.newMatrix.startDate = this.todayDate;
+    this.newMatrix.endDate = '';
+
+    this.newMatrix.mondayQuantity = this.lastMatrix.mondayQuantity;
+    this.newMatrix.tuesdayQuantity = this.lastMatrix.tuesdayQuantity;
+    this.newMatrix.wednesdayQuantity = this.lastMatrix.wednesdayQuantity;
+    this.newMatrix.thursdayQuantity = this.lastMatrix.thursdayQuantity;
+    this.newMatrix.fridayQuantity = this.lastMatrix.fridayQuantity;
+    this.newMatrix.saturdayQuantity = this.lastMatrix.saturdayQuantity;
+    this.newMatrix.sundayQuantity = this.lastMatrix.sundayQuantity;
+
+
+    switch (this.ndate.getDay()) {
+      case 0:
+
+        this.newMatrix.mondayQuantity += addOrSubQuantity;
+        break;
+      case 1:
+
+        this.newMatrix.tuesdayQuantity += addOrSubQuantity;
+        break;
+
+      case 2:
+
+        this.newMatrix.wednesdayQuantity += addOrSubQuantity;
+        break;
+      case 3:
+
+        this.newMatrix.thursdayQuantity += addOrSubQuantity;
+        break;
+      case 4:
+
+        this.newMatrix.fridayQuantity += addOrSubQuantity;
+        break;
+      case 5:
+
+        this.newMatrix.saturdayQuantity += addOrSubQuantity;
+        break;
+      case 6:
+
+        this.newMatrix.sundayQuantity += addOrSubQuantity;
+
+        break;
+
+
+    }
+    this.matrixTab.push(this.lastMatrix);
+    this.matrixTab.push(this.newMatrix);
+
+
+    /!*On sauvegarde notre newMatrix avec date null et last matrix avec dateToday*!/
+    this.matrixService.createMatrix(this.matrixTab).subscribe(rep => {
+      this.matrixTab = rep;
+      this.ngOnInit();
+    });
+
+
+
+  }
+
+
+
+/*
   updateCommand(command: Command, addQuantity) {
 
     this.newCommand.id = command.id;
@@ -101,5 +232,6 @@ export class FuturCommandComponent implements OnInit {
       }
     );
   }
+*/
 
 }

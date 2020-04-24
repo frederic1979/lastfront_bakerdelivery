@@ -15,20 +15,29 @@ export class MatrixService {
     return this.httpClient.get<Matrix[]>('http://localhost:8080/api/bakerdelivery/matrix/');
   }
 
-  getMatrixById(matrix): Observable<Matrix> {
-    return this.httpClient.get<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/restaurant/' + matrix.id);
+  getMatrixById(matrixId): Observable<Matrix> {
+    return this.httpClient.get<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/restaurant/' + matrixId);
   }
 
-  createMatrix(matrix): Observable<Matrix> {
-    return this.httpClient.post<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/', matrix);
+  createMatrix(matrixDuo): Observable<Matrix[]> {
+    return this.httpClient.post<Matrix[]>('http://localhost:8080/api/bakerdelivery/matrix/', matrixDuo);
   }
 
-  updateMatrix(matrix: Matrix): Observable<Matrix>  {
+  updateMatrix(matrix: Matrix): Observable<Matrix> {
     return this.httpClient.put<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/' + matrix.id, matrix);
   }
 
   getMatrixByRestaurantIdAndEndDate(restaurantId, endDate): Observable<Matrix> {
-        return this.httpClient.get<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/restaurants/' + restaurantId + '?endDate=' + endDate);
+    return this.httpClient.get<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/restaurants/' + restaurantId + '?endDate=' + endDate);
   }
+
+  getMatrixByRestaurantIdAndEndDateNullAndStartDateBetweenBeginAndFinish(restaurantId, start, end): Observable<Matrix> {
+    return this.httpClient.get<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/' + restaurantId + '/between' + '?begin=' + start + '&finish=' + end);
+  }
+
+  getMatrixByEndDateNullAndStartDatePassed(start, end): Observable<Matrix[]> {
+    return this.httpClient.get<Matrix[]>('http://localhost:8080/api/bakerdelivery/matrix/between/' + '?begin=' + start + '&finish=' + end);
+  }
+
 
 }

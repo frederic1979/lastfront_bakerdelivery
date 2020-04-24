@@ -39,8 +39,8 @@ import {MatDatepickerModule, MatFormFieldModule, MatIconModule, MatMenuModule, M
       {path: 'restaurants/:restaurantId', component: RestaurantDetailComponent},
       {path: 'creationCommand/:restaurantId', component: CreationCommandComponent},
       {path: 'onboard', component: DeliveryOnboardComponent},
-      {path: 'restaurants/:restaurantId/futurCommand/:commandId', component: FuturCommandComponent},
-      {path: 'restaurants/:restaurantId/futurCommand/:date', component: FuturCommandComponent},
+      {path: 'restaurants/:restaurantId/futurCommand/:commandId/:date', component: FuturCommandComponent},
+      /*{path: 'restaurants/:restaurantId/futurCommand/:date', component: FuturCommandComponent},*/
 
     ]),
     ReactiveFormsModule,

@@ -26,9 +26,12 @@ export class RestaurantListComponent implements OnInit {
 
 
   matrixList: Matrix[] = new Array();
+  matrix: Matrix ;
+  mat: Matrix ;
   commandsList: Command[] = new Array();
   restaurantList: Restaurant[] = new Array();
   date = new Date();
+  todayDate = moment(this.date).format('YYYY-MM-DD');
   numberOfActualWeek;
 
 
@@ -53,10 +56,14 @@ export class RestaurantListComponent implements OnInit {
       );
     }
 
-    this.matrixService.getMatrix().subscribe(rep => {
+/*On charge la liste des matrix à enddate null et startDate<=today*/
+    this.matrixService.getMatrixByEndDateNullAndStartDatePassed('2000-01-01', this.todayDate).subscribe(rep => {
       this.matrixList = rep;
+      for (const matrix of this.matrixList) {
 
+      }
     });
+
 
 
     this.numberOfActualWeek = moment().format('w');
@@ -136,8 +143,17 @@ findNextNumberWeek(){
   }
 
 
+  getMatrixByEndDateNullAndStartDatePassed(restaurantId) {
 
+    this.matrixService.getMatrixByRestaurantIdAndEndDateNullAndStartDateBetweenBeginAndFinish(restaurantId, '2000-01-01', this.todayDate).subscribe(rep => {
+      this.matrix = rep;
 
+    });
+  }
 
+  function(restaurantId): Matrix{
+    this.getMatrixByEndDateNullAndStartDatePassed(restaurantId);
+    return this.matrix;
+  }
 
 }
