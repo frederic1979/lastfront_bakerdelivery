@@ -7,6 +7,7 @@ import {Command} from '../../model/command';
 import * as moment from 'moment';
 import {MatrixService} from '../../service/matrix.service';
 import {Matrix} from '../../model/matrix';
+import {element} from 'protractor';
 
 @Component({
   selector: 'app-restaurant-detail',
@@ -35,26 +36,33 @@ export class RestaurantDetailComponent implements OnInit {
   /*Date de After tomorrow au format 2020-04-14*/
   afterTomorrowDate = moment(this.tomorowDate).add(1, 'days').format('YYYY-MM-DD');
 
-  /*Jour de tomorrowDay*/
-  tomorrowDay = moment().locale('fr').add(1, 'days').format('dddd');
+
 
   x: Command = new Command();
   y: Command = new Command();
   z: Command = new Command();
 
     addOrSubQuantity: number;
-
+day;
   date = new Date();
+  dateUrl;
+  ndateUrl;
   mondayOfTheWeek;
   mondayOfTheWeek2;
   sundayOfTheWeek;
   sundayOfTheWeek2;
 
-  a : number;
+  nbclic = 0;
+
+  a: number;
+
+  matrixOfTheDay: Matrix;
+  matrixWithEndDateNull: Matrix;
 
   matrixTab: Matrix[] = new Array();
   newMatrix: Matrix = new Matrix();
   lastMatrix: Matrix = new Matrix();
+  datesOfTheWeek = new Array();
 
   commandsListOfTheWeek: Command[] = new Array();
   newCommandsListOfTheWeek: Command[] = new Array();
@@ -70,6 +78,10 @@ export class RestaurantDetailComponent implements OnInit {
 
     this.futurCommand.date = this.tomorowDate;
 
+    /*On top la date de URL*/
+    this.dateUrl = this.route.snapshot.paramMap.get('date');
+    this.ndateUrl = new Date(this.dateUrl);
+
     /*On recup le restauraurantId de l url*/
     this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');
 
@@ -84,11 +96,22 @@ export class RestaurantDetailComponent implements OnInit {
     });
 
 
+    this.day = moment(this.dateUrl).locale('fr').format('dddd');
 
-    this.findMondayOfTheWeek(this.date); // On obtient le mondayOfTheWeek
+
+    this.findMondayOfTheWeek(this.ndateUrl); // On obtient le mondayOfTheWeek
     this.findSundayOfTheWeek(this.mondayOfTheWeek); // On obtient le sundayOfTheWeek
     this.findMondayOfTheWeekInFrenchFormat(this.mondayOfTheWeek);
     this.findSundayOfTheWeekInFrenchFormat(this.mondayOfTheWeek);
+
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(1, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(2, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(3, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(4, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(5, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(6, 'days').format('YYYY-MM-DD'));
+
 
     if (this.commandsListOfTheWeek.length === 0) {
       // tslint:disable-next-line:max-line-length
@@ -98,40 +121,44 @@ export class RestaurantDetailComponent implements OnInit {
     }
 
 
-    this.matrixService.getMatrixByRestaurantIdAndEndDateNullAndStartDateBetweenBeginAndFinish(this.restaurantId, '2000-01-01', this.todayDate).subscribe(rep => {
-
-      console.log('2nd tour, on vide le matrixTab, et on affect à newMatrix.id la valeur lastMatrix.id pour ne pas recréer de new mat à chaque + ou -');
-      if (this.matrixTab.length !== 0) {
-        this.matrixTab.splice(0);
+    if (this.newMatrix.id === undefined) {
+      this.matrixService.getMatrixByRestaurantIdAndEndDate(this.restaurantId, '').subscribe(rep => {
+        console.log('la newmatrice n est pas crée');
         this.lastMatrix = rep;
-        /*on affecte id de last à la new*/
-        this.newMatrix.id = this.lastMatrix.id;
+      });
+    } else {
+      console.log('on est dans le else, la newmatrice existe deja');
+      this.lastMatrix = this.newMatrix;
+    }
 
-        console.log('1er tour');
-      } else {
-        this.lastMatrix = rep;
-        this.getDayQuantity();
+    this.matrixService.getMatrixByRestaurantIdAndEndDate(this.restaurantId, this.dateUrl).subscribe(rep => {
+
+      if (rep !== null) {
+        this.newMatrix = rep;
+        this.lastMatrix = this.newMatrix;
       }
     });
 
 
 
-    this.getQuantityByRestaurantIdAndDate(this.todayDate);
+
+
+
 
   }
-
-
   getNextWeek() {
-    for (const command of this.commandsListOfTheWeek) {
-      // tslint:disable-next-line:max-line-length
-      this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, moment(command.date).add(7, 'days').format('YYYY-MM-DD')).subscribe(rep => {
-        this.y = rep;
-        this.newCommandsListOfTheWeek.push(this.y);
-        this.commandsListOfTheWeek = this.newCommandsListOfTheWeek;
-      });
-    }
-    this.newCommandsListOfTheWeek = this.newCommandsListOfTheWeek.slice(0, 0);
+    this.nbclic++;
+
+    this.datesOfTheWeek.splice(0);
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(6 + this.nbclic, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(7 + this.nbclic, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(8 + this.nbclic, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(9 + this.nbclic, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(10 + this.nbclic, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(11 + this.nbclic, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(12 + this.nbclic, 'days').format('YYYY-MM-DD'));
   }
+
 
 
   findMondayOfTheWeek(date) {
@@ -218,36 +245,36 @@ export class RestaurantDetailComponent implements OnInit {
 
 
   /*Renvoi la quantité du jour*/
-  getDayQuantity(): number {
-    switch (this.date.getDay()) {
+  getDayQuantityTomorrow(date): number {
+    switch (date.getDay()) {
       case 0:
 
-        return this.lastMatrix.mondayQuantity;
+        return this.lastMatrix.sundayQuantity;
         break;
       case 1:
 
-        return this.lastMatrix.tuesdayQuantity;
+        return this.lastMatrix.mondayQuantity;
         break;
 
       case 2:
 
-        return this.lastMatrix.wednesdayQuantity;
+        return this.lastMatrix.tuesdayQuantity;
         break;
       case 3:
 
-        return this.lastMatrix.thursdayQuantity;
+        return this.lastMatrix.wednesdayQuantity;
         break;
       case 4:
 
-        return this.lastMatrix.fridayQuantity;
+        return this.lastMatrix.thursdayQuantity;
         break;
       case 5:
 
-        return this.lastMatrix.saturdayQuantity;
+        return this.lastMatrix.fridayQuantity;
         break;
       case 6:
 
-        return this.lastMatrix.sundayQuantity;
+        return this.lastMatrix.saturdayQuantity;
 
         break;
 
@@ -256,10 +283,11 @@ export class RestaurantDetailComponent implements OnInit {
 
   /*Qd on clic sur un des boutons plus ou moins*/
   updateMatrix(addOrSubQuantity) {
+    console.log('juste apres le update' );
 
     this.newMatrix.restaurantId = this.restaurantId;
     this.newMatrix.startDate = this.todayDate;
-    this.newMatrix.endDate = '';
+    this.newMatrix.endDate = this.dateUrl;
 
     this.newMatrix.mondayQuantity = this.lastMatrix.mondayQuantity;
     this.newMatrix.tuesdayQuantity = this.lastMatrix.tuesdayQuantity;
@@ -270,52 +298,55 @@ export class RestaurantDetailComponent implements OnInit {
     this.newMatrix.sundayQuantity = this.lastMatrix.sundayQuantity;
 
 
-    switch (this.date.getDay()) {
+    switch (this.ndateUrl.getDay()) {
       case 0:
 
-        this.newMatrix.mondayQuantity += addOrSubQuantity;
+        this.newMatrix.sundayQuantity += addOrSubQuantity;
         break;
       case 1:
 
-        this.newMatrix.tuesdayQuantity += addOrSubQuantity;
+        this.newMatrix.mondayQuantity += addOrSubQuantity;
         break;
 
       case 2:
 
-        this.newMatrix.wednesdayQuantity += addOrSubQuantity;
+        this.newMatrix.tuesdayQuantity += addOrSubQuantity;
         break;
       case 3:
 
-        this.newMatrix.thursdayQuantity += addOrSubQuantity;
+        this.newMatrix.wednesdayQuantity += addOrSubQuantity;
         break;
       case 4:
 
-        this.newMatrix.fridayQuantity += addOrSubQuantity;
+        this.newMatrix.thursdayQuantity += addOrSubQuantity;
         break;
       case 5:
 
-        this.newMatrix.saturdayQuantity += addOrSubQuantity;
+        this.newMatrix.fridayQuantity += addOrSubQuantity;
         break;
       case 6:
 
-        this.newMatrix.sundayQuantity += addOrSubQuantity;
+        this.newMatrix.saturdayQuantity += addOrSubQuantity;
 
         break;
 
 
     }
 
-    this.matrixTab.push(this.lastMatrix);
-    this.matrixTab.push(this.newMatrix);
 
-
-    /*On sauvegarde notre newMatrix avec date null et last matrix avec dateToday*/
-    this.matrixService.createMatrix(this.matrixTab).subscribe(rep => {
-      this.matrixTab = rep;
-      this.ngOnInit();
-    });
-
-
+    if (this.newMatrix.id !== undefined) {
+      console.log('on va faire le update');
+      this.matrixService.updateMatrix(this.newMatrix, this.newMatrix.id).subscribe(rep => {
+        this.newMatrix = rep;
+        this.ngOnInit();
+      });
+    } else {
+      console.log('creation matrice');
+      this.matrixService.createMatrix(this.newMatrix).subscribe(rep => {
+        this.newMatrix = rep;
+        this.ngOnInit();
+      });
+    }
 
   }
 

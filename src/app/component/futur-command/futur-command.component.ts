@@ -31,19 +31,30 @@ export class FuturCommandComponent implements OnInit {
 
   startDate = moment().add(2, 'days').format('YYYY-MM-DD');
   endDate = moment().add(15, 'days').format('YYYY-MM-DD');
-  ndate;
+  dateLink;
+  ndateLink;
+  dateLinkDay;
+
+
+
+
+
   constructor(private commandService: CommandService, private restaurantService: RestaurantService, private matrixService: MatrixService, private route: ActivatedRoute) {
   }
 
 
   ngOnInit() {
 
+
     /*On top le commandId de URL*/
     this.commandId = this.route.snapshot.paramMap.get('commandId');
 
     /*On top la date de URL*/
-    this.date = this.route.snapshot.paramMap.get('date');
-    this.ndate = new Date(this.date);
+    this.dateLink = this.route.snapshot.paramMap.get('date');
+    this.ndateLink = new Date(this.dateLink);
+
+    /*Jour de dateLink*/
+    this.dateLinkDay = moment(this.dateLink).locale('fr').format('dddd');
 
     /*On top le restaurantId de URL*/
     this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');
@@ -60,13 +71,14 @@ export class FuturCommandComponent implements OnInit {
     });
 
 
-    this.matrixService.getMatrixByRestaurantIdAndEndDateNullAndStartDateBetweenBeginAndFinish(this.restaurantId, '2020-01-01', this.date).subscribe(rep => {
+/*
+    this.matrixService.getMatrixByRestaurantIdAndEndDateNullAndStartDateBetweenBeginAndFinish(this.restaurantId, '2020-01-01', this.dateLink).subscribe(rep => {
 
       if (this.matrixTab.length !== 0) {
         console.log('on est dans le 2nd tour ?');
         this.matrixTab.splice(0);
         this.lastMatrix = rep;
-        /*on affecte id de last à la new*/
+        /!*on affecte id de last à la new*!/
         this.newMatrix.id = this.lastMatrix.id;
 
       } else {
@@ -76,10 +88,22 @@ export class FuturCommandComponent implements OnInit {
       }
     });
 
+*/
 
 
 
 
+  }
+
+
+  displayNumberDay(date) {
+    return moment(date).locale('fr').format('DD');
+  }
+
+  displayMonth(date) {
+
+    return moment(date).locale('fr').format('MMMM');
+    /*return moment(date).locale('fr').format('dddd').substr(0, 2);*/
   }
 
   dayDate(date) {
@@ -93,33 +117,34 @@ export class FuturCommandComponent implements OnInit {
 
 
   getDayQuantity(): number {
-    switch (this.ndate.getDay()) {
-      case 0:
+    console.log(this.ndateLink.getDay());
+    switch (this.ndateLink.getDay()) {
+      case 1:
 
         return this.lastMatrix.mondayQuantity;
         break;
-      case 1:
+      case 2:
 
         return this.lastMatrix.tuesdayQuantity;
         break;
 
-      case 2:
+      case 3:
 
         return this.lastMatrix.wednesdayQuantity;
         break;
-      case 3:
+      case 4:
 
         return this.lastMatrix.thursdayQuantity;
         break;
-      case 4:
+      case 5:
 
         return this.lastMatrix.fridayQuantity;
         break;
-      case 5:
+      case 6:
 
         return this.lastMatrix.saturdayQuantity;
         break;
-      case 6:
+      case 0:
 
         return this.lastMatrix.sundayQuantity;
 
@@ -145,7 +170,7 @@ export class FuturCommandComponent implements OnInit {
     this.newMatrix.sundayQuantity = this.lastMatrix.sundayQuantity;
 
 
-    switch (this.ndate.getDay()) {
+    switch (this.ndateLink.getDay()) {
       case 0:
 
         this.newMatrix.mondayQuantity += addOrSubQuantity;
@@ -184,8 +209,8 @@ export class FuturCommandComponent implements OnInit {
 
 
     /!*On sauvegarde notre newMatrix avec date null et last matrix avec dateToday*!/
-    this.matrixService.createMatrix(this.matrixTab).subscribe(rep => {
-      this.matrixTab = rep;
+    this.matrixService.createMatrix(this.newMatrix).subscribe(rep => {
+      this.newMatrix = rep;
       this.ngOnInit();
     });
 

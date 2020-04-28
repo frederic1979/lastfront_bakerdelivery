@@ -36,7 +36,7 @@ import {MatDatepickerModule, MatFormFieldModule, MatIconModule, MatMenuModule, M
     RouterModule.forRoot([
       {path: '', component: WelcomePageComponent},
       {path: 'restaurants', component: RestaurantListComponent},
-      {path: 'restaurants/:restaurantId', component: RestaurantDetailComponent},
+      {path: 'restaurants/:restaurantId/:date', component: RestaurantDetailComponent},
       {path: 'creationCommand/:restaurantId', component: CreationCommandComponent},
       {path: 'onboard', component: DeliveryOnboardComponent},
       {path: 'restaurants/:restaurantId/futurCommand/:commandId/:date', component: FuturCommandComponent},

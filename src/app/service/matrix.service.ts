@@ -19,12 +19,12 @@ export class MatrixService {
     return this.httpClient.get<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/restaurant/' + matrixId);
   }
 
-  createMatrix(matrixDuo): Observable<Matrix[]> {
-    return this.httpClient.post<Matrix[]>('http://localhost:8080/api/bakerdelivery/matrix/', matrixDuo);
+  createMatrix(matrix: Matrix): Observable<Matrix> {
+    return this.httpClient.post<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/', matrix);
   }
 
-  updateMatrix(matrix: Matrix): Observable<Matrix> {
-    return this.httpClient.put<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/' + matrix.id, matrix);
+  updateMatrix(matrix, matrixId): Observable<Matrix> {
+    return this.httpClient.put<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/' + matrixId, matrix);
   }
 
   getMatrixByRestaurantIdAndEndDate(restaurantId, endDate): Observable<Matrix> {

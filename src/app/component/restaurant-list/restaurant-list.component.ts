@@ -59,9 +59,7 @@ export class RestaurantListComponent implements OnInit {
 /*On charge la liste des matrix à enddate null et startDate<=today*/
     this.matrixService.getMatrixByEndDateNullAndStartDatePassed('2000-01-01', this.todayDate).subscribe(rep => {
       this.matrixList = rep;
-      for (const matrix of this.matrixList) {
 
-      }
     });
 
 

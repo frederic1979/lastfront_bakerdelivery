@@ -13,6 +13,29 @@
 
 <button id="buttonRight" [routerLink]="['/restaurants',restaurant.id]">Retour</button>
 
+
+<section class="liste_commandes">
+
+  <h4 class="day">{{dateLinkDay}} {{displayNumberDay(dateLink)}} {{displayMonth(dateLink)}} </h4>
+  <div><img src="../../assets/meule.jpg"></div>
+
+
+  <!-- Bloc quantité-->
+  <div id="quantityBloc">
+
+    <!--boutton moins-->
+    <button id="circleButtonMoins" (click)="updateMatrix(-  1)">-</button>
+    <h1 id="quantityNumber">{{getDayQuantity()}} </h1>
+    <!--boutton plus-->
+    <button id="circleButtonPlus" (click)="updateMatrix(+1)">+</button>
+  </div>
+
+</section>
+
+
+
+<!--
+
 <section class="liste_commandes" >
 
   <h5>{{ displayFrenchDate(command.date)}} </h5>
@@ -26,7 +49,7 @@
   <h3 id="quantityNumber"> {{getDayQuantity()}}</h3>
     <button id="circleButtonPlus" (click)="updateMatrix(+1)">+</button>
   </div>
-</section>
+</section>-->
 
 
 <!--

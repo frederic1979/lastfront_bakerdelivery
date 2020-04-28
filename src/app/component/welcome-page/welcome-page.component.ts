@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {RestaurantService} from '../../service/restaurant.service';
 import {Restaurant} from '../../model/restaurant';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-welcome-page',
@@ -10,6 +11,7 @@ import {Restaurant} from '../../model/restaurant';
 export class WelcomePageComponent implements OnInit {
 
   restaurantList;
+date = moment().add(1, 'days').format('YYYY-MM-DD');
 
   constructor(private restaurantService: RestaurantService) {
   }
