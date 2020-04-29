@@ -1,19 +1,8 @@
 export interface Imatrix {
   id: number;
 
-  mondayQuantity: number;
-
-  tuesdayQuantity: number;
-
-  wednesdayQuantity: number;
-
-  thursdayQuantity: number;
-
-  fridayQuantity: number;
-
-  saturdayQuantity: number;
-
-  sundayQuantity: number;
+  day: number;
+  quantity: number;
 
   startDate: string;
 
@@ -24,20 +13,9 @@ export interface Imatrix {
 
 export class Matrix implements Imatrix {
   id: number;
+day: number;
+  quantity: number;
 
-  mondayQuantity: number;
-
-  tuesdayQuantity: number;
-
-  wednesdayQuantity: number;
-
-  thursdayQuantity: number;
-
-  fridayQuantity: number;
-
-  saturdayQuantity: number;
-
-  sundayQuantity: number;
 
   startDate: string;
 

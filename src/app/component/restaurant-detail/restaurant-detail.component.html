@@ -6,7 +6,7 @@
 
   <h3>COMMANDES</h3>
 
-      <button id="buttonRight" [routerLink]="['../',tomorowDate]" (click)="ngOnInit()">Retour</button>
+      <button id="buttonRight" (click)="ngOnInit()" [routerLink]="['../',tomorowDate]" *ngIf="dateUrl!==tomorowDate">Retour</button>
 
 
       <!-- Bloc jour lendemain-->
@@ -21,7 +21,7 @@
 
           <!--boutton moins-->
           <button id="circleButtonMoins" (click)="updateMatrix(-  1)">-</button>
-          <h1 id="quantityNumber">{{getDayQuantityTomorrow(ndateUrl)}} </h1>
+          <h1 id="quantityNumber">{{matrixRef.quantity}} </h1>
           <!--boutton plus-->
           <button id="circleButtonPlus" (click)="updateMatrix(+1)">+</button>
         </div>

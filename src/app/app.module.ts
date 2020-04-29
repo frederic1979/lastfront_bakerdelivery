@@ -12,7 +12,7 @@ import { CreationCommandComponent } from './component/creation-command/creation-
 import {RestaurantDetailComponent} from './component/restaurant-detail/restaurant-detail.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { DeliveryOnboardComponent } from './component/delivery-onboard/delivery-onboard.component';
-import { FuturCommandComponent } from './component/futur-command/futur-command.component';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDatepickerModule, MatFormFieldModule, MatIconModule, MatMenuModule, MatSliderModule, MatTableModule} from '@angular/material';
 
@@ -27,7 +27,7 @@ import {MatDatepickerModule, MatFormFieldModule, MatIconModule, MatMenuModule, M
     RestaurantDetailComponent,
     CreationCommandComponent,
     DeliveryOnboardComponent,
-    FuturCommandComponent,
+
 
   ],
   imports: [
@@ -39,7 +39,7 @@ import {MatDatepickerModule, MatFormFieldModule, MatIconModule, MatMenuModule, M
       {path: 'restaurants/:restaurantId/:date', component: RestaurantDetailComponent},
       {path: 'creationCommand/:restaurantId', component: CreationCommandComponent},
       {path: 'onboard', component: DeliveryOnboardComponent},
-      {path: 'restaurants/:restaurantId/futurCommand/:commandId/:date', component: FuturCommandComponent},
+
       /*{path: 'restaurants/:restaurantId/futurCommand/:date', component: FuturCommandComponent},*/
 
     ]),

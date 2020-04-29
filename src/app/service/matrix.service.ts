@@ -31,6 +31,10 @@ export class MatrixService {
     return this.httpClient.get<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/restaurants/' + restaurantId + '?endDate=' + endDate);
   }
 
+  getMatrixByRestaurantIdAndEndDateAndDay(restaurantId, endDate, day): Observable<Matrix> {
+    return this.httpClient.get<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/restaurants/' + restaurantId + '/' + day + '?endDate=' + endDate);
+  }
+
   getMatrixByRestaurantIdAndEndDateNullAndStartDateBetweenBeginAndFinish(restaurantId, start, end): Observable<Matrix> {
     return this.httpClient.get<Matrix>('http://localhost:8080/api/bakerdelivery/matrix/' + restaurantId + '/between' + '?begin=' + start + '&finish=' + end);
   }

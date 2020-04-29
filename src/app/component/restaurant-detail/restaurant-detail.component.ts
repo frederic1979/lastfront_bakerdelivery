@@ -56,17 +56,17 @@ day;
 
   a: number;
 
-  matrixOfTheDay: Matrix;
+  matrixOfTheDay: Matrix = new Matrix();
   matrixWithEndDateNull: Matrix;
 
   matrixTab: Matrix[] = new Array();
-  newMatrix: Matrix = new Matrix();
-  lastMatrix: Matrix = new Matrix();
+
+  matrixRef: Matrix = new Matrix();
   datesOfTheWeek = new Array();
 
   commandsListOfTheWeek: Command[] = new Array();
   newCommandsListOfTheWeek: Command[] = new Array();
-
+  dayNumber: number;
 
 
   constructor(private restaurantService: RestaurantService, private commandService: CommandService, private matrixService: MatrixService, private route: ActivatedRoute) {
@@ -79,8 +79,14 @@ day;
     this.futurCommand.date = this.tomorowDate;
 
     /*On top la date de URL*/
-    this.dateUrl = this.route.snapshot.paramMap.get('date');
-    this.ndateUrl = new Date(this.dateUrl);
+    this.route.paramMap.subscribe(params => {
+      this.dateUrl = params.get('date');
+      this.ndateUrl = new Date(params.get('date'));
+      this.dayNumber = this.ndateUrl.getDay();
+      this.day = moment(this.dateUrl).locale('fr').format('dddd');
+    })
+
+
 
     /*On recup le restauraurantId de l url*/
     this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');
@@ -90,13 +96,8 @@ day;
       this.restaurant = rep;
     });
 
-    /*On charge la commande du restaurantId à la date de tomorowDate*/
-    this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, this.tomorowDate).subscribe(rep => {
-      this.command = rep;
-    });
 
 
-    this.day = moment(this.dateUrl).locale('fr').format('dddd');
 
 
     this.findMondayOfTheWeek(this.ndateUrl); // On obtient le mondayOfTheWeek
@@ -104,6 +105,7 @@ day;
     this.findMondayOfTheWeekInFrenchFormat(this.mondayOfTheWeek);
     this.findSundayOfTheWeekInFrenchFormat(this.mondayOfTheWeek);
 
+    this.datesOfTheWeek.splice(0);
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).format('YYYY-MM-DD'));
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(1, 'days').format('YYYY-MM-DD'));
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(2, 'days').format('YYYY-MM-DD'));
@@ -113,39 +115,29 @@ day;
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(6, 'days').format('YYYY-MM-DD'));
 
 
-    if (this.commandsListOfTheWeek.length === 0) {
-      // tslint:disable-next-line:max-line-length
-      this.commandService.getCommandsByRestaurantIdAndBetweenTwoDates(this.restaurantId, this.mondayOfTheWeek, this.sundayOfTheWeek).subscribe(rep => {
-        this.commandsListOfTheWeek = rep;
-      });
-    }
 
-
-    if (this.newMatrix.id === undefined) {
-      this.matrixService.getMatrixByRestaurantIdAndEndDate(this.restaurantId, '').subscribe(rep => {
+    if (this.matrixOfTheDay.id === undefined) {
+      this.matrixService.getMatrixByRestaurantIdAndEndDateAndDay(this.restaurantId, '', this.dayNumber).subscribe(rep => {
         console.log('la newmatrice n est pas crée');
-        this.lastMatrix = rep;
+        this.matrixRef = rep;
       });
     } else {
       console.log('on est dans le else, la newmatrice existe deja');
-      this.lastMatrix = this.newMatrix;
+      this.matrixRef = this.matrixOfTheDay;
     }
 
     this.matrixService.getMatrixByRestaurantIdAndEndDate(this.restaurantId, this.dateUrl).subscribe(rep => {
 
       if (rep !== null) {
-        this.newMatrix = rep;
-        this.lastMatrix = this.newMatrix;
+        this.matrixOfTheDay = rep;
+        this.matrixRef = this.matrixOfTheDay;
       }
     });
 
-
-
-
-
-
-
   }
+
+
+
   getNextWeek() {
     this.nbclic++;
 
@@ -235,16 +227,8 @@ day;
   }
 
 
-  getQuantityByRestaurantIdAndDate(date) {
-    this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, date).subscribe(rep => {
-      this.z = rep;
-
-    });
-    return this.z.quantity;
-  }
-
-
-  /*Renvoi la quantité du jour*/
+/*
+  /!*Renvoi la quantité du jour*!/
   getDayQuantityTomorrow(date): number {
     switch (date.getDay()) {
       case 0:
@@ -279,170 +263,40 @@ day;
         break;
 
     }
-  }
+  }*/
 
   /*Qd on clic sur un des boutons plus ou moins*/
   updateMatrix(addOrSubQuantity) {
     console.log('juste apres le update' );
 
-    this.newMatrix.restaurantId = this.restaurantId;
-    this.newMatrix.startDate = this.todayDate;
-    this.newMatrix.endDate = this.dateUrl;
+    this.matrixOfTheDay.restaurantId = this.restaurantId;
+    this.matrixOfTheDay.startDate = this.todayDate;
+    this.matrixOfTheDay.endDate = this.dateUrl;
+    this.matrixOfTheDay.day = this.matrixRef.day;
+    this.matrixOfTheDay.quantity = this.matrixRef.quantity;
 
-    this.newMatrix.mondayQuantity = this.lastMatrix.mondayQuantity;
-    this.newMatrix.tuesdayQuantity = this.lastMatrix.tuesdayQuantity;
-    this.newMatrix.wednesdayQuantity = this.lastMatrix.wednesdayQuantity;
-    this.newMatrix.thursdayQuantity = this.lastMatrix.thursdayQuantity;
-    this.newMatrix.fridayQuantity = this.lastMatrix.fridayQuantity;
-    this.newMatrix.saturdayQuantity = this.lastMatrix.saturdayQuantity;
-    this.newMatrix.sundayQuantity = this.lastMatrix.sundayQuantity;
+    this.matrixOfTheDay.quantity += addOrSubQuantity;
 
-
-    switch (this.ndateUrl.getDay()) {
-      case 0:
-
-        this.newMatrix.sundayQuantity += addOrSubQuantity;
-        break;
-      case 1:
-
-        this.newMatrix.mondayQuantity += addOrSubQuantity;
-        break;
-
-      case 2:
-
-        this.newMatrix.tuesdayQuantity += addOrSubQuantity;
-        break;
-      case 3:
-
-        this.newMatrix.wednesdayQuantity += addOrSubQuantity;
-        break;
-      case 4:
-
-        this.newMatrix.thursdayQuantity += addOrSubQuantity;
-        break;
-      case 5:
-
-        this.newMatrix.fridayQuantity += addOrSubQuantity;
-        break;
-      case 6:
-
-        this.newMatrix.saturdayQuantity += addOrSubQuantity;
-
-        break;
-
-
-    }
-
-
-    if (this.newMatrix.id !== undefined) {
-      console.log('on va faire le update');
-      this.matrixService.updateMatrix(this.newMatrix, this.newMatrix.id).subscribe(rep => {
-        this.newMatrix = rep;
-        this.ngOnInit();
-      });
-    } else {
+    /*Si pas encore de matrice de creer specifiquement pour ce jour on en crée une*/
+    if (this.matrixOfTheDay.id === undefined /*&& this.newMatrix.endDate !== this.tomorowDate*/) {
       console.log('creation matrice');
-      this.matrixService.createMatrix(this.newMatrix).subscribe(rep => {
-        this.newMatrix = rep;
-        this.ngOnInit();
+      this.matrixService.createMatrix(this.matrixOfTheDay).subscribe(rep => {
+        this.matrixOfTheDay = rep;
+
       });
+      this.ngOnInit();
+      /*sinon on met à jour la new matrice du jour*/
+    } else {
+      console.log('on va faire le update');
+      this.matrixService.updateMatrix(this.matrixOfTheDay, this.matrixOfTheDay.id).subscribe(rep => {
+        this.matrixOfTheDay = rep;
+
+      });
+      this.ngOnInit();
     }
 
   }
 
-
-  /*createNewMatrix(newCommand) {
-
-    this.newMatrix.restaurantId = this.restaurantId;
-    this.newMatrix.startDate = this.todayDate;
-    this.newMatrix.endDate = '';
-
-    this.newMatrix.mondayQuantity = this.lastMatrix.mondayQuantity;
-    this.newMatrix.tuesdayQuantity = this.lastMatrix.tuesdayQuantity;
-    this.newMatrix.wednesdayQuantity = this.lastMatrix.wednesdayQuantity;
-    this.newMatrix.thursdayQuantity = this.lastMatrix.thursdayQuantity;
-    this.newMatrix.fridayQuantity = this.lastMatrix.fridayQuantity;
-    this.newMatrix.saturdayQuantity = this.lastMatrix.saturdayQuantity;
-    this.newMatrix.sundayQuantity = this.lastMatrix.sundayQuantity;
-
-
-    switch (this.date.getDay()) {
-      case 0:
-
-        this.newMatrix.mondayQuantity = newCommand.quantity;
-        break;
-      case 1:
-
-        this.newMatrix.tuesdayQuantity = newCommand.quantity;
-        break;
-
-      case 2:
-
-        this.newMatrix.wednesdayQuantity = newCommand.quantity;
-        break;
-      case 3:
-
-        this.newMatrix.thursdayQuantity = newCommand.quantity;
-        break;
-      case 4:
-
-        this.newMatrix.fridayQuantity = newCommand.quantity;
-        break;
-      case 5:
-
-        this.newMatrix.saturdayQuantity = newCommand.quantity;
-        break;
-      case 6:
-
-        this.newMatrix.sundayQuantity = newCommand.quantity;
-
-        break;
-
-
-    }
-
-
-    this.matrixTab.push(this.lastMatrix);
-    this.matrixTab.push(this.newMatrix);
-
-
-    this.matrixService.createMatrix(this.matrixTab).subscribe(rep => {
-      this.matrixTab = rep;
-
-    });
-
-  }
-
-
-  /!*Quand on clic sur button + ou -*!/
-  updateCommand(command: Command, addQuantity) {
-
-    /!*on crée la newCommand qui sera la meme que command en cours + addQuantity*!/
-    this.newCommand.id = command.id;
-    this.newCommand.date = command.date;
-    this.newCommand.quantity = command.quantity + addQuantity;
-    this.newCommand.restaurantId = this.restaurantId;
-
-    /!*on update la newcommand qui est en fait la commande*!/
-    this.commandService.updateCommand(this.newCommand).subscribe(
-      (response) => {
-        console.log('resp :' + response);
-
-        /!*pendant l update on en lance creation  de la newMatrix et la mise à jour de lastMatrix.endDate*!/
-        this.createNewMatrix(this.newCommand);
-
-        this.ngOnInit();
-      }, (err) => {
-        console.log('erreur : ' + err);
-      },
-      () => {
-        console.log('end');
-      }
-    );
-
-  }
-
-*/
 
 
 }
