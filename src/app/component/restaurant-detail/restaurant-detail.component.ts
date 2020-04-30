@@ -75,19 +75,6 @@ day;
 
   ngOnInit() {
 
-
-    this.futurCommand.date = this.tomorowDate;
-
-    /*On top la date de URL*/
-    this.route.paramMap.subscribe(params => {
-      this.dateUrl = params.get('date');
-      this.ndateUrl = new Date(params.get('date'));
-      this.dayNumber = this.ndateUrl.getDay();
-      this.day = moment(this.dateUrl).locale('fr').format('dddd');
-    })
-
-
-
     /*On recup le restauraurantId de l url*/
     this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');
 
@@ -96,8 +83,13 @@ day;
       this.restaurant = rep;
     });
 
-
-
+     /*On top la date de URL*/
+    this.route.paramMap.subscribe(params => {
+      this.dateUrl = params.get('date');
+      this.ndateUrl = new Date(params.get('date'));
+      this.dayNumber = this.ndateUrl.getDay();
+      this.day = moment(this.dateUrl).locale('fr').format('dddd');
+    });
 
 
     this.findMondayOfTheWeek(this.ndateUrl); // On obtient le mondayOfTheWeek
@@ -105,6 +97,36 @@ day;
     this.findMondayOfTheWeekInFrenchFormat(this.mondayOfTheWeek);
     this.findSundayOfTheWeekInFrenchFormat(this.mondayOfTheWeek);
 
+
+    /*On construit la liste des jours de la semaine sous le compteur*/
+    this.buildWeek();
+
+
+    /*si il n y a pas de matrixOfTheDay on prend notre matrixRef*/
+    if (this.matrixOfTheDay.id === undefined) {
+      console.log('on a this.matrixOfTheDay.id === undefined')
+      this.matrixService.getMatrixByRestaurantIdAndEndDateAndDay(this.restaurantId, '', this.dayNumber).subscribe(rep => {
+        this.matrixRef = rep;
+      });
+
+      /*si une matrixOfTheDay existe on la prend comme reference*/
+    } else {
+      console.log('on a this.matrixOfTheDay.id qui n est pas undefined')
+      this.matrixRef = this.matrixOfTheDay;
+    }
+
+    /*si il existe une matrixOfTheDay , elle devient notre matrixRef*/
+    this.matrixService.getMatrixByRestaurantIdAndEndDate(this.restaurantId, this.dateUrl).subscribe(rep => {
+      if (rep !== null) {
+        console.log('on est dans si (rep !== null');
+        this.matrixOfTheDay = rep;
+        this.matrixRef = this.matrixOfTheDay;
+      }
+    });
+
+  }
+
+  buildWeek() {
     this.datesOfTheWeek.splice(0);
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).format('YYYY-MM-DD'));
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(1, 'days').format('YYYY-MM-DD'));
@@ -113,30 +135,7 @@ day;
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(4, 'days').format('YYYY-MM-DD'));
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(5, 'days').format('YYYY-MM-DD'));
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(6, 'days').format('YYYY-MM-DD'));
-
-
-
-    if (this.matrixOfTheDay.id === undefined) {
-      this.matrixService.getMatrixByRestaurantIdAndEndDateAndDay(this.restaurantId, '', this.dayNumber).subscribe(rep => {
-        console.log('la newmatrice n est pas crée');
-        this.matrixRef = rep;
-      });
-    } else {
-      console.log('on est dans le else, la newmatrice existe deja');
-      this.matrixRef = this.matrixOfTheDay;
-    }
-
-    this.matrixService.getMatrixByRestaurantIdAndEndDate(this.restaurantId, this.dateUrl).subscribe(rep => {
-
-      if (rep !== null) {
-        this.matrixOfTheDay = rep;
-        this.matrixRef = this.matrixOfTheDay;
-      }
-    });
-
   }
-
-
 
   getNextWeek() {
     this.nbclic++;
@@ -267,7 +266,6 @@ day;
 
   /*Qd on clic sur un des boutons plus ou moins*/
   updateMatrix(addOrSubQuantity) {
-    console.log('juste apres le update' );
 
     this.matrixOfTheDay.restaurantId = this.restaurantId;
     this.matrixOfTheDay.startDate = this.todayDate;
@@ -277,17 +275,15 @@ day;
 
     this.matrixOfTheDay.quantity += addOrSubQuantity;
 
-    /*Si pas encore de matrice de creer specifiquement pour ce jour on en crée une*/
+    /*Si pas encore de matriceOfTheDay de creer specifiquement pour ce jour on en crée une*/
     if (this.matrixOfTheDay.id === undefined /*&& this.newMatrix.endDate !== this.tomorowDate*/) {
-      console.log('creation matrice');
       this.matrixService.createMatrix(this.matrixOfTheDay).subscribe(rep => {
         this.matrixOfTheDay = rep;
-
+        this.ngOnInit();
       });
-      this.ngOnInit();
-      /*sinon on met à jour la new matrice du jour*/
+
+      /*sinon on met à jour la matrixOfTheDay*/
     } else {
-      console.log('on va faire le update');
       this.matrixService.updateMatrix(this.matrixOfTheDay, this.matrixOfTheDay.id).subscribe(rep => {
         this.matrixOfTheDay = rep;
 

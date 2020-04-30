@@ -6,7 +6,7 @@
 
   <h3>COMMANDES</h3>
 
-      <button id="buttonRight" (click)="ngOnInit()" [routerLink]="['../',tomorowDate]" *ngIf="dateUrl!==tomorowDate">Retour</button>
+      <button id="buttonRight"  [routerLink]="['../',tomorowDate]" *ngIf="dateUrl!==tomorowDate">Retour</button>
 
 
       <!-- Bloc jour lendemain-->
@@ -33,7 +33,7 @@
       <!--le bloc des prochains jours de la semaine-->
 
       <div id="bloc" >
-        <button id="weekDayButton" *ngFor="let date of datesOfTheWeek" [routerLink]="['../',date]" (click)="ngOnInit()">
+        <button id="weekDayButton" *ngFor="let date of datesOfTheWeek" [routerLink]="['../',date]" >
           {{displayThreeCharacterDay(date)}}{{displayDateDayMonth(date)}}
 
         </button>
