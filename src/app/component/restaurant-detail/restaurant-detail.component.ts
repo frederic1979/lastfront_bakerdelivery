@@ -35,8 +35,7 @@ export class RestaurantDetailComponent implements OnInit {
   tomorowDate = moment().add(1, 'days').format('YYYY-MM-DD');
 
   /*Date de After tomorrow au format 2020-04-14*/
-  afterTomorrowDate = moment(this.tomorowDate).add(1, 'days').format('YYYY-MM-DD');
-
+  afterTomorrowDate = moment().add(2, 'days').format('YYYY-MM-DD');
 
 
   x: Command = new Command();
@@ -164,7 +163,7 @@ export class RestaurantDetailComponent implements OnInit {
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(5, 'days').format('YYYY-MM-DD'));
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(6, 'days').format('YYYY-MM-DD'));
 
-    this.datesOfTheWeek.splice(0, this.datesOfTheWeek.indexOf(this.tomorowDate) )
+    this.datesOfTheWeek.splice(0, this.datesOfTheWeek.indexOf(this.afterTomorrowDate) )
     console.log(this.datesOfTheWeek.length);
   }
 
@@ -173,12 +172,12 @@ export class RestaurantDetailComponent implements OnInit {
     this.datesOfTheWeek.splice(0);
 
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(7 * this.nbclic, 'days').format('YYYY-MM-DD'));
-    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(7 + 2 * this.nbclic , 'days').format('YYYY-MM-DD'));
-    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(8 + this.nbclic, 'days').format('YYYY-MM-DD'));
-    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(9 + this.nbclic, 'days').format('YYYY-MM-DD'));
-    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(10 + this.nbclic, 'days').format('YYYY-MM-DD'));
-    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(11 + this.nbclic, 'days').format('YYYY-MM-DD'));
-    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(12 + this.nbclic, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(1 + 7 * this.nbclic , 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(2 + 7 * this.nbclic, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(3 + 7 * this.nbclic, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(4 + 7 * this.nbclic, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(5 + 7 * this.nbclic, 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(6 + 7 * this.nbclic, 'days').format('YYYY-MM-DD'));
   }
 
 
