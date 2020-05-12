@@ -22,7 +22,7 @@
 
           <!--boutton moins-->
           <button id="circleButtonMoins" (click)="updateCommand(-  1)">-</button>
-          <h1 id="quantityNumber">{{matrixRef.quantity}} </h1>
+          <h1 id="quantityNumber">{{command.quantity}} </h1>
 
           <!--boutton plus-->
           <button id="circleButtonPlus" (click)="updateCommand(1)">+</button>
@@ -35,27 +35,17 @@
 
       <!--le bloc des prochains jours de la semaine-->
 
+
       <div id="bloc" >
+        <button (click)="buildWeek()" ><<</button>
         <button id="weekDayButton" *ngFor="let date of datesOfTheWeek" [routerLink]="['../',date]" >
 
           {{displayThreeCharacterDay(date)}}{{displayDateDayMonth(date)}}
 
         </button>
+
+        <button (click)="getNextWeek()">>></button>
       </div>
 
-      <button (click)="getNextWeek()">>></button>
-
-
-    <!--  &lt;!&ndash;le bloc des prochains jours de la semaine&ndash;&gt;
-
-      <div id="bloc" >
-        <button id="weekDayButton" *ngFor="let date of datesOfTheWeek" [routerLink]="['../',date]" (click)="loadMatrix(dateUrl)">
-          {{displayThreeCharacterDay(date)}}{{displayDateDayMonth(date)}}
-
-        </button>
-      </div>
-
-      <button (click)="getNextWeek()">>></button>
--->
 
 

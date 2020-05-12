@@ -34,8 +34,6 @@ export class RestaurantDetailComponent implements OnInit {
   /*Date de tomorrow au format 2020-04-14*/
   tomorowDate = moment().add(1, 'days').format('YYYY-MM-DD');
 
-  /*Date de After tomorrow au format 2020-04-14*/
-  afterTomorrowDate = moment().add(2, 'days').format('YYYY-MM-DD');
 
 
   x: Command = new Command();
@@ -51,7 +49,6 @@ export class RestaurantDetailComponent implements OnInit {
   mondayOfTheWeek2;
   sundayOfTheWeek;
   sundayOfTheWeek2;
-
 
 
   a: number;
@@ -75,20 +72,27 @@ export class RestaurantDetailComponent implements OnInit {
 
   ngOnInit() {
 
-    /*On recup le restauraurantId de l url*/
-    this.restaurantId = this.route.snapshot.paramMap.get('restaurantId');
 
-    /*On charge le restaurant du restaurantId*/
-    this.restaurantService.getRestaurantById(this.restaurantId).subscribe(rep => {
-      this.restaurant = rep;
-    });
-
-     /*On top la date de URL*/
     this.route.paramMap.subscribe(params => {
+      /*On top la date de URL*/
+      this.restaurantId = params.get('restaurantId');
+      /*On top la date de URL*/
       this.dateUrl = params.get('date');
       this.ndateUrl = new Date(params.get('date'));
       this.dayNumber = this.ndateUrl.getDay();
       this.day = moment(this.dateUrl).locale('fr').format('dddd');
+
+      /*On charge le restaurant du restaurantId*/
+      this.restaurantService.getRestaurantById(this.restaurantId).subscribe(restaurant => {
+        this.restaurant = restaurant;
+      });
+
+      /*on charge la command du restaurantId*/
+      this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, this.dateUrl).subscribe(command => {
+        this.command = command;
+      });
+
+
     });
 
 
@@ -98,9 +102,6 @@ export class RestaurantDetailComponent implements OnInit {
     this.findSundayOfTheWeekInFrenchFormat(this.mondayOfTheWeek);
 
 
-
-
-
     /*On construit la liste des jours de la semaine sous le compteur*/
     this.buildWeek();
 
@@ -108,9 +109,8 @@ export class RestaurantDetailComponent implements OnInit {
     /*si il n y a pas de matrixOfTheDay on prend notre matrixRef*/
 
 
-    this.loadMatrixOfTheDay();
-    this.loadMatrixRef();
-
+ /*   this.loadMatrixOfTheDay();
+    this.loadMatrixRef();*/
 
 
   }
@@ -146,12 +146,6 @@ export class RestaurantDetailComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
   buildWeek() {
     this.datesOfTheWeek.splice(0);
 
@@ -163,8 +157,8 @@ export class RestaurantDetailComponent implements OnInit {
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(5, 'days').format('YYYY-MM-DD'));
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(6, 'days').format('YYYY-MM-DD'));
 
-    this.datesOfTheWeek.splice(0, this.datesOfTheWeek.indexOf(this.afterTomorrowDate) )
-    console.log(this.datesOfTheWeek.length);
+    this.datesOfTheWeek.splice(0, this.datesOfTheWeek.indexOf(this.tomorowDate));
+
   }
 
   getNextWeek() {
@@ -172,14 +166,13 @@ export class RestaurantDetailComponent implements OnInit {
     this.datesOfTheWeek.splice(0);
 
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(7 * this.nbclic, 'days').format('YYYY-MM-DD'));
-    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(1 + 7 * this.nbclic , 'days').format('YYYY-MM-DD'));
+    this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(1 + 7 * this.nbclic, 'days').format('YYYY-MM-DD'));
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(2 + 7 * this.nbclic, 'days').format('YYYY-MM-DD'));
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(3 + 7 * this.nbclic, 'days').format('YYYY-MM-DD'));
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(4 + 7 * this.nbclic, 'days').format('YYYY-MM-DD'));
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(5 + 7 * this.nbclic, 'days').format('YYYY-MM-DD'));
     this.datesOfTheWeek.push(moment(this.mondayOfTheWeek).add(6 + 7 * this.nbclic, 'days').format('YYYY-MM-DD'));
   }
-
 
 
   findMondayOfTheWeek(date) {
@@ -233,7 +226,6 @@ export class RestaurantDetailComponent implements OnInit {
   }
 
 
-
   displayDateDayMonth(date) {
 
     return moment(date).locale('fr').format('DD-MM');
@@ -256,8 +248,17 @@ export class RestaurantDetailComponent implements OnInit {
     return moment(date).locale('fr').format('ddd');
   }
 
+  updateCommand(addOrSubQuantity) {
+    this.command.quantity = this.command.quantity + addOrSubQuantity;
 
-  /*Qd on clic sur un des boutons plus ou moins*/
+    this.commandService.updateCommand(this.command, this.command.id).subscribe(rep => {
+        this.command = rep;
+      }
+    );
+    this.ngOnInit();
+  }
+
+/*  /!*Qd on clic sur un des boutons plus ou moins*!/
   updateCommand(addOrSubQuantity) {
 
     console.log('étape on vient de rentrer dans le update');
@@ -269,18 +270,17 @@ export class RestaurantDetailComponent implements OnInit {
     this.matrixOfTheDay.quantity = this.matrixRef.quantity + addOrSubQuantity;
 
 
-
-    /*on affecte les valeurs qui vont bien à matrixOfTheDay*/
+    /!*on affecte les valeurs qui vont bien à matrixOfTheDay*!/
 
     this.matrixService.createMatrix(this.matrixOfTheDay).subscribe(rep => {
-      if (this.matrixOfTheDay.id === undefined) { /*si le this.matrixOfTheDay.id n existe pas, on créé la this.matrixOfTheDay*/
+      if (this.matrixOfTheDay.id === undefined) { /!*si le this.matrixOfTheDay.id n existe pas, on créé la this.matrixOfTheDay*!/
         this.matrixOfTheDay = rep;
         console.log('étape creation la matrixOfTheDay car non créée ');
         this.ngOnInit();
 
       } else {
         this.matrixService.updateMatrix(this.matrixOfTheDay, this.matrixOfTheDay.id).subscribe(rep2 => {
-          this.matrixOfTheDay = rep2; /*si le this.matrixOfTheDay.id  existe , on update la this.matrixOfTheDay*/
+          this.matrixOfTheDay = rep2; /!*si le this.matrixOfTheDay.id  existe , on update la this.matrixOfTheDay*!/
 
           console.log('étape on update la matrixOfTheDay car elle existe déja');
         });
@@ -290,25 +290,23 @@ export class RestaurantDetailComponent implements OnInit {
     this.ngOnInit();
 
 
+    /!*
+        /!*Si pas encore de matriceOfTheDay de creer specifiquement pour ce jour on en crée une*!/
+        if (this.matrixOfTheDay.id === undefined /!*&& this.newMatrix.endDate !== this.tomorowDate*!/) {
+          this.matrixService.createMatrix(this.matrixOfTheDay).subscribe(rep => {
+            this.matrixOfTheDay = rep;
+            this.ngOnInit();
+          });
 
-/*
-    /!*Si pas encore de matriceOfTheDay de creer specifiquement pour ce jour on en crée une*!/
-    if (this.matrixOfTheDay.id === undefined /!*&& this.newMatrix.endDate !== this.tomorowDate*!/) {
-      this.matrixService.createMatrix(this.matrixOfTheDay).subscribe(rep => {
-        this.matrixOfTheDay = rep;
-        this.ngOnInit();
-      });
+          /!*sinon on met à jour la matrixOfTheDay*!/
+        } else {
+          this.matrixService.updateMatrix(this.matrixOfTheDay, this.matrixOfTheDay.id).subscribe(rep => {
+            this.matrixOfTheDay = rep;
 
-      /!*sinon on met à jour la matrixOfTheDay*!/
-    } else {
-      this.matrixService.updateMatrix(this.matrixOfTheDay, this.matrixOfTheDay.id).subscribe(rep => {
-        this.matrixOfTheDay = rep;
-
-      });*/
+          });*!/
 
 
-  }
-
+  }*/
 
 
 }

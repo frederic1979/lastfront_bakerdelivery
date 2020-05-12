@@ -38,7 +38,7 @@ import {MatDatepickerModule, MatFormFieldModule, MatIconModule, MatMenuModule, M
       {path: 'restaurants', component: RestaurantListComponent},
       {path: 'restaurants/:restaurantId/:date', component: RestaurantDetailComponent},
       {path: 'creationCommand/:restaurantId', component: CreationCommandComponent},
-      {path: 'onboard', component: DeliveryOnboardComponent},
+      {path: 'onboard/:date', component: DeliveryOnboardComponent},
 
       /*{path: 'restaurants/:restaurantId/futurCommand/:date', component: FuturCommandComponent},*/
 

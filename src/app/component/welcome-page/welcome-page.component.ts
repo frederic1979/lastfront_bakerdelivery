@@ -16,6 +16,7 @@ date = moment().add(1, 'days').format('YYYY-MM-DD');
   constructor(private restaurantService: RestaurantService) {
   }
 
+
   ngOnInit() {
     /*this.restaurantService.getRestaurantList().subscribe(rep => {
       this.restaurantList = rep;
