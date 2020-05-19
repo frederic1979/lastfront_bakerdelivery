@@ -16,29 +16,15 @@ import {element} from 'protractor';
 })
 export class RestaurantDetailComponent implements OnInit {
   nbclic = 0;
-  addOrSubQuantity = 0;
   command: Command = new Command();
   restaurantId;
   restaurant: Restaurant = new Restaurant();
-  newCommand: Command = new Command();
-  futurCommand: Command = new Command();
-
-
-  /*Date end qui vaut  jourJ + 30*/
-  end = moment().add(30, 'days').format('YYYY-MM-DD');
-
 
   /*Date du jour au format 2020-04-13*/
   todayDate = moment().format('YYYY-MM-DD');
 
   /*Date de tomorrow au format 2020-04-14*/
   tomorowDate = moment().add(1, 'days').format('YYYY-MM-DD');
-
-
-
-  x: Command = new Command();
-  y: Command = new Command();
-  z: Command = new Command();
 
 
   day;
@@ -49,20 +35,9 @@ export class RestaurantDetailComponent implements OnInit {
   mondayOfTheWeek2;
   sundayOfTheWeek;
   sundayOfTheWeek2;
-
-
-  a: number;
-
   matrixOfTheDay: Matrix = new Matrix(); /*sans le new Matrix , on la garde null*/
-  matrixWithEndDateNull: Matrix;
-
-  matrixTab: Matrix[] = new Array();
-
   matrixRef: Matrix = new Matrix();
   datesOfTheWeek = new Array();
-
-  commandsListOfTheWeek: Command[] = new Array();
-  newCommandsListOfTheWeek: Command[] = new Array();
   dayNumber: number;
 
 
@@ -87,7 +62,7 @@ export class RestaurantDetailComponent implements OnInit {
         this.restaurant = restaurant;
       });
 
-      /*on charge la command du restaurantId*/
+      /*on charge la command du restaurantId, que l on va save egalement via le get*/
       this.commandService.getCommandByRestaurantIdAndDate(this.restaurantId, this.dateUrl).subscribe(command => {
         this.command = command;
       });
@@ -106,17 +81,11 @@ export class RestaurantDetailComponent implements OnInit {
     this.buildWeek();
 
 
-    /*si il n y a pas de matrixOfTheDay on prend notre matrixRef*/
-
-
- /*   this.loadMatrixOfTheDay();
-    this.loadMatrixRef();*/
-
-
   }
 
+/*
 
-  loadMatrixOfTheDay() { /*qui sera soit à object avec des valeurs à null soit avec des valeurs*/
+  loadMatrixOfTheDay() { /!*qui sera soit à object avec des valeurs à null soit avec des valeurs*!/
     this.matrixService.getMatrixByRestaurantIdAndEndDateAndDay(this.restaurantId, this.dateUrl, this.dayNumber).subscribe(rep => {
       if (rep !== null) {
         this.matrixOfTheDay = rep;
@@ -129,14 +98,14 @@ export class RestaurantDetailComponent implements OnInit {
 
   loadMatrixRef() {
 
-    /*on charge la matrixRef*/
+    /!*on charge la matrixRef*!/
     this.matrixService.getMatrixByRestaurantIdAndEndDateAndDay(this.restaurantId, '', this.dayNumber).subscribe(rep => {
 
-      if (this.matrixOfTheDay.id !== undefined) { /*si la this.matrixOfTheDay a un id , alors on remplace la matrixRef par matrixOfTheDay*/
+      if (this.matrixOfTheDay.id !== undefined) { /!*si la this.matrixOfTheDay a un id , alors on remplace la matrixRef par matrixOfTheDay*!/
         this.matrixRef = this.matrixOfTheDay;
         console.log('étape on charge la matrixRef avec la matrixOfTheDay qui existe à ce niveau');
 
-      } else {/*sinon la matrixRef est celle avec la date à null*/
+      } else {/!*sinon la matrixRef est celle avec la date à null*!/
         this.matrixRef = rep;
         console.log('étape on charge la matrixRef avec les endate à null');
       }
@@ -144,6 +113,7 @@ export class RestaurantDetailComponent implements OnInit {
 
     });
   }
+*/
 
 
   buildWeek() {
@@ -258,55 +228,6 @@ export class RestaurantDetailComponent implements OnInit {
     this.ngOnInit();
   }
 
-/*  /!*Qd on clic sur un des boutons plus ou moins*!/
-  updateCommand(addOrSubQuantity) {
-
-    console.log('étape on vient de rentrer dans le update');
-    this.matrixOfTheDay.restaurantId = this.restaurantId;
-    this.matrixOfTheDay.day = this.matrixRef.day;
-    this.matrixOfTheDay.startDate = this.todayDate;
-    this.matrixOfTheDay.endDate = this.dateUrl;
-
-    this.matrixOfTheDay.quantity = this.matrixRef.quantity + addOrSubQuantity;
-
-
-    /!*on affecte les valeurs qui vont bien à matrixOfTheDay*!/
-
-    this.matrixService.createMatrix(this.matrixOfTheDay).subscribe(rep => {
-      if (this.matrixOfTheDay.id === undefined) { /!*si le this.matrixOfTheDay.id n existe pas, on créé la this.matrixOfTheDay*!/
-        this.matrixOfTheDay = rep;
-        console.log('étape creation la matrixOfTheDay car non créée ');
-        this.ngOnInit();
-
-      } else {
-        this.matrixService.updateMatrix(this.matrixOfTheDay, this.matrixOfTheDay.id).subscribe(rep2 => {
-          this.matrixOfTheDay = rep2; /!*si le this.matrixOfTheDay.id  existe , on update la this.matrixOfTheDay*!/
-
-          console.log('étape on update la matrixOfTheDay car elle existe déja');
-        });
-      }
-    });
-    console.log('étape ngOnInit');
-    this.ngOnInit();
-
-
-    /!*
-        /!*Si pas encore de matriceOfTheDay de creer specifiquement pour ce jour on en crée une*!/
-        if (this.matrixOfTheDay.id === undefined /!*&& this.newMatrix.endDate !== this.tomorowDate*!/) {
-          this.matrixService.createMatrix(this.matrixOfTheDay).subscribe(rep => {
-            this.matrixOfTheDay = rep;
-            this.ngOnInit();
-          });
-
-          /!*sinon on met à jour la matrixOfTheDay*!/
-        } else {
-          this.matrixService.updateMatrix(this.matrixOfTheDay, this.matrixOfTheDay.id).subscribe(rep => {
-            this.matrixOfTheDay = rep;
-
-          });*!/
-
-
-  }*/
 
 
 }

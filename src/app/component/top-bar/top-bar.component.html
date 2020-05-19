@@ -19,12 +19,27 @@
 
   </div>
 
+  <nav id="user_choice">
+    <ul>
+      <li class="deroulant">
+        <a (click)=getRestaurantList() href="#">Changer Matrice </a> <!--on charge la liste de resto uniquement si on clic-->
+        <ul class="sous" >
+          <li *ngFor="let restaurant of restaurantList" >
+                      <a href="#" [routerLink]="['matrix',restaurant.id]" > {{ restaurant.name }} </a>
+
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+
+
   <div >
     <a id="stock" style="text-decoration:none" [routerLink]="['/restaurants']" title="Ma liste de restaurants">
       <button class="button_connexion" type="submit">Stock de la semaine</button>
     </a>
   </div>
-
 
 
 

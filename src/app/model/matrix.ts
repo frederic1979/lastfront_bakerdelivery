@@ -13,7 +13,7 @@ export interface Imatrix {
 
 export class Matrix implements Imatrix {
   id: number;
-day: number;
+  day: number;
   quantity: number;
 
 

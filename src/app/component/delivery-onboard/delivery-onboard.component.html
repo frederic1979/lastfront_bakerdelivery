@@ -1,9 +1,13 @@
 
 <table>
+
+  <h3>{{setDayOfTheWeek(dateUrlFormatDate)}}</h3>
+
 <tr id="title">
-<!--  <th>Restaurant</th>
-  <th>{{setDayOfTheWeek(dateOfTheDay)}}</th>
-  <th>Etat de la livraison</th>-->
+  <th>Restaurant</th>
+  <th>Quantité</th>
+  <th>Etat</th>
+  <th>Status</th>
 
 
 </tr>
@@ -13,7 +17,7 @@
 
 
     <td>{{displayNameOfRestaurantId(command.restaurantId)}}</td>
-    <td>{{command.quantity}}</td>
+    <button [routerLink]="['../../restaurants/',command.restaurantId,command.date]">{{command.quantity}}</button>
     <td>{{command.etat}}</td>
     <button (click)="updateCommandDelivery(command, command.id)">OK</button>
 

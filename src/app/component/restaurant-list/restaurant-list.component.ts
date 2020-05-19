@@ -29,6 +29,7 @@ export class RestaurantListComponent implements OnInit {
   matrix: Matrix ;
   mat: Matrix ;
   commandsList: Command[] = new Array();
+  command: Command;
   restaurantList: Restaurant[] = new Array();
   date = new Date();
   todayDate = moment(this.date).format('YYYY-MM-DD');
@@ -40,7 +41,15 @@ export class RestaurantListComponent implements OnInit {
 
 
   ngOnInit() {
-    /*On ne recharge la commandList seulement si elle est vide*/
+
+
+/*on charge la liste des restos*/
+    this.restaurantService.getRestaurantList().subscribe(rep => {
+        this.restaurantList = rep;
+      }
+    );
+
+    /*/!*On ne recharge la commandList seulement si elle est vide*!/
     if (this.commandsList.length === 0) {
       this.commandService.getCommands().subscribe(rep => {
         this.commandsList = rep;
@@ -48,7 +57,7 @@ export class RestaurantListComponent implements OnInit {
       });
     }
 
-    /*On ne recharge la restaurantList seulement si elle est vide*/
+    /!*On ne recharge la restaurantList seulement si elle est vide*!/
     if (this.restaurantList.length === 0) {
       this.restaurantService.getRestaurantList().subscribe(rep => {
           this.restaurantList = rep;
@@ -56,11 +65,11 @@ export class RestaurantListComponent implements OnInit {
       );
     }
 
-/*On charge la liste des matrix à enddate null et startDate<=today*/
+/!*On charge la liste des matrix à enddate null et startDate<=today*!/
     this.matrixService.getMatrixByEndDateNullAndStartDatePassed('2000-01-01', this.todayDate).subscribe(rep => {
       this.matrixList = rep;
 
-    });
+    });*/
 
 
 
@@ -133,25 +142,25 @@ findNextNumberWeek(){
 
 
   getQuantityCommandByRestauIdAndDate(restaurantId, date) {
-    for (const command of this.commandsList) {
-      if (command.restaurantId === restaurantId && command.date === date) {
-        return  command.quantity;
+    this.commandService.getCommandByRestaurantIdAndDate(restaurantId, date).subscribe(rep => {
+        this.command = rep;
+        return this.command.quantity;
       }
-    }
+    );
   }
 
 
-  getMatrixByEndDateNullAndStartDatePassed(restaurantId) {
+/*  getMatrixByEndDateNullAndStartDatePassed(restaurantId) {
 
     this.matrixService.getMatrixByRestaurantIdAndEndDateNullAndStartDateBetweenBeginAndFinish(restaurantId, '2000-01-01', this.todayDate).subscribe(rep => {
       this.matrix = rep;
 
     });
-  }
+  }*/
 
-  function(restaurantId): Matrix{
+/*  function(restaurantId): Matrix{
     this.getMatrixByEndDateNullAndStartDatePassed(restaurantId);
     return this.matrix;
-  }
+  }*/
 
 }

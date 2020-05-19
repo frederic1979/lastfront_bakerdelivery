@@ -8,13 +8,13 @@ import { RestaurantListComponent } from './component/restaurant-list/restaurant-
 import { TopBarComponent } from './component/top-bar/top-bar.component';
 import { FooterComponent } from './component/footer/footer.component';
 import {HttpClientModule} from '@angular/common/http';
-import { CreationCommandComponent } from './component/creation-command/creation-command.component';
 import {RestaurantDetailComponent} from './component/restaurant-detail/restaurant-detail.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { DeliveryOnboardComponent } from './component/delivery-onboard/delivery-onboard.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDatepickerModule, MatFormFieldModule, MatIconModule, MatMenuModule, MatSliderModule, MatTableModule} from '@angular/material';
+import { CreationMatrixComponent } from './component/creation-matrix/creation-matrix.component';
 
 
 @NgModule({
@@ -25,8 +25,8 @@ import {MatDatepickerModule, MatFormFieldModule, MatIconModule, MatMenuModule, M
     TopBarComponent,
     FooterComponent,
     RestaurantDetailComponent,
-    CreationCommandComponent,
     DeliveryOnboardComponent,
+    CreationMatrixComponent,
 
 
   ],
@@ -37,8 +37,8 @@ import {MatDatepickerModule, MatFormFieldModule, MatIconModule, MatMenuModule, M
       {path: '', component: WelcomePageComponent},
       {path: 'restaurants', component: RestaurantListComponent},
       {path: 'restaurants/:restaurantId/:date', component: RestaurantDetailComponent},
-      {path: 'creationCommand/:restaurantId', component: CreationCommandComponent},
       {path: 'onboard/:date', component: DeliveryOnboardComponent},
+      {path: 'matrix/:restaurantId', component: CreationMatrixComponent},
 
       /*{path: 'restaurants/:restaurantId/futurCommand/:date', component: FuturCommandComponent},*/
 

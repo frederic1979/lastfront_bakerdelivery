@@ -21,15 +21,14 @@ export class DeliveryOnboardComponent implements OnInit {
   restaurantList: Restaurant[] = new Array();
   restaurant: Restaurant = new Restaurant();
   dateOfTheDay = new Date();
-  dateFormat;
-  commandListOfTheDayAttente;
-  commandListOfTheDayLivre;
 
   dateUrl;
+  dateUrlFormatDate ;
+
   commandsOfTheDay: Command[] = new Array();
   commandsOfTheDayAtt: Command[] = new Array();
   commandsOfTheDayLivree: Command[] = new Array();
-command: Command;
+  command: Command;
   ncommand: Command;
 
   constructor(private restaurantService: RestaurantService, private commandService: CommandService, private matrixService: MatrixService, private route: ActivatedRoute) {
@@ -40,46 +39,37 @@ command: Command;
     this.route.paramMap.subscribe(params => {
       /*On top la date de URL*/
       this.dateUrl = params.get('date');
-      /*this.ndateUrl = new Date(params.get('date'));
-      this.dayNumber = this.ndateUrl.getDay();
-      this.day = moment(this.dateUrl).locale('fr').format('dddd');*/
+      this.dateUrlFormatDate = new Date(params.get('date'));
 
 
       /*on charge les commandes en attentes et livrées à la dateUrl, car dans cette méthode il y a le save des commandes qui n'ont pas été modifiées par le resto*/
       this.commandService.getCommandsByDate(this.dateUrl).subscribe(commandList => {
-        console.log('etape1');
         this.commandsOfTheDay = commandList;
 
         /*On charge les commandes en attente dans la liste commandsOfTheDayAtt*/
         this.commandService.getCommandsByEtatAndDate('Attente', this.dateUrl).subscribe(commandListAtt => {
-          console.log('etape2');
           this.commandsOfTheDayAtt = commandListAtt;
         });
 
         /*On charge les commandes en attente dans la liste commandsOfTheDayLivree*/
         this.commandService.getCommandsByEtatAndDate('Livree', this.dateUrl).subscribe(commandListLiv => {
-          console.log('etape2bis');
           this.commandsOfTheDayLivree = commandListLiv;
         });
-
-
       });
 
-
-        /*on charge la liste des restaurants*/
+      /*on charge la liste des restaurants*/
       this.restaurantService.getRestaurantList().subscribe(restaurantList => {
-
-          this.restaurantList = restaurantList;
-        });
-
-
+        this.restaurantList = restaurantList;
       });
+
+
+    });
   }
 
-  getCommandByRestaurantIdAndDate(restaurantId, date){
-this.commandService.getCommandByRestaurantIdAndDate(restaurantId, date).subscribe(command => {
-  this.command = command;
-});
+  getCommandByRestaurantIdAndDate(restaurantId, date) {
+    this.commandService.getCommandByRestaurantIdAndDate(restaurantId, date).subscribe(command => {
+      this.command = command;
+    });
 
   }
 
@@ -115,22 +105,8 @@ this.commandService.getCommandByRestaurantIdAndDate(restaurantId, date).subscrib
     this.ngOnInit();
   }
 
-
-
-}
-
-
-
-/*
-
-
-
-*/
-
-
-/*  setDayOfTheWeek(date) {
-
-    switch (date.getDay()) {
+  setDayOfTheWeek(date) {
+switch (date.getDay()) {
       case 0 :
         return 'Dimanche';
         break;
@@ -154,6 +130,15 @@ this.commandService.getCommandByRestaurantIdAndDate(restaurantId, date).subscrib
         break;
 
     }
-  }*/
+
+  }
+
+}
+
+
+
+
+
+
 
 

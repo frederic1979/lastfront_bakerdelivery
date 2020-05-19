@@ -22,15 +22,8 @@ export class TopBarComponent implements OnInit {
   getRestaurantList() {
     this.restaurantService.getRestaurantList().subscribe(
       (response) => {
-        console.log('resp :' + response);
-        this.restaurantList = response;
-      }, (err) => {
-        console.log('erreur : ' + err);
-      },
-      () => {
-        console.log('end');
-      }
-    );
+        this.restaurantList = response;}
+      );
   }
 
 }
