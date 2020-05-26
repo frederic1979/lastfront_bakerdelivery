@@ -52,7 +52,7 @@ export class MatrixService {
   }
 
   getMatrixByRestaurantId(restaurantId): Observable<Matrix[]> {
-    return this.httpClient.get<Matrix[]>('http://localhost:8080/api/bakerdelivery/matrix/restaurants/' +  restaurantId);
+    return this.httpClient.get<Matrix[]>('http://localhost:8080/api/bakerdelivery/matrix/restaurant/' +  restaurantId);
   }
 
   getMatrixByRestaurantIdAndStartDateBefore(restaurantId, date): Observable<Matrix[]> {

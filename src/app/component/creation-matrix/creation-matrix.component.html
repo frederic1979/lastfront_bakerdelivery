@@ -1,11 +1,11 @@
 
 
 <h3>Les matrices de la semaine </h3>
-<form [formGroup]="matrixForm" >
+
 
 <tr id="title">
 <td>start date</td>
-<td>end date </td>
+
 <td>jour de livraison</td>
 <td>quantité</td>
 </tr>
@@ -13,18 +13,32 @@
 <tr *ngFor="let matrix of matrixList">
 
 
-  <td>{{matrix.startDate}}</td>
-  <td>{{matrix.endDate}}</td>
+  <td>{{matrix.startDate| date:'dd-MM-yyyy':'fr' }} </td>
   <td>{{setDayOfTheWeek(matrix.day)}}</td>
   <td>
-  <button (click)="addQuantity(matrix, matrix.startDate, -1)" >-</button>
+  <button (click)="addQuantity(matrix,  -1)" >-</button>
   {{matrix.quantity}}
-    <button (click)="addQuantity(matrix, matrix.startDate,1)">+</button>
+    <button (click)="addQuantity(matrix,1)">+</button>
   </td>
 
 
+
+
+  <label>
+   à partir de :
+    <input type="date" [formControl]="startDateForm">
+  </label>
+
+
+  <div class="button">
+    <button (click)="postStartDate(startDateForm.value,matrix)" >Soumettre la nouvelle matrix</button>
+  </div>
+
 </tr>
-</form>
+
+
+
+
 
 
 
