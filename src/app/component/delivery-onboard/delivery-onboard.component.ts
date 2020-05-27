@@ -66,6 +66,8 @@ export class DeliveryOnboardComponent implements OnInit {
     });
   }
 
+
+
   getCommandByRestaurantIdAndDate(restaurantId, date) {
     this.commandService.getCommandByRestaurantIdAndDate(restaurantId, date).subscribe(command => {
       this.command = command;

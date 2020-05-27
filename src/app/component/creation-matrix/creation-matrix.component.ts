@@ -92,6 +92,7 @@ export class CreationMatrixComponent implements OnInit {
     this.matrixService.createMatrix(this.newMatrix).subscribe(rep => {
 
     });
+    this.ngOnInit();
   }
 
 

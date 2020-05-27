@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import {Restaurant} from '../../model/restaurant';
 import {MatrixService} from '../../service/matrix.service';
 import {Matrix} from '../../model/matrix';
+import {ActivatedRoute} from '@angular/router';
 
 
 @Component({
@@ -28,48 +29,42 @@ export class RestaurantListComponent implements OnInit {
   matrixList: Matrix[] = new Array();
   matrix: Matrix ;
   mat: Matrix ;
-  commandsList: Command[] = new Array();
+  commandsListOfTheDay: Command[] = new Array();
   command: Command;
   restaurantList: Restaurant[] = new Array();
   date = new Date();
   todayDate = moment(this.date).format('YYYY-MM-DD');
   numberOfActualWeek;
+  startUrl;
+  endUrl;
 
-
-  constructor(private restaurantService: RestaurantService, private commandService: CommandService, private matrixService : MatrixService) {
+  constructor(private restaurantService: RestaurantService, private commandService: CommandService, private matrixService: MatrixService, private route: ActivatedRoute) {
   }
 
 
   ngOnInit() {
 
+    this.route.paramMap.subscribe(params => {
+      /*On top la date de URL*/
+      this.startUrl = params.get('start');
+      this.endUrl = params.get('end');
+    });
 
-/*on charge la liste des restos*/
+
+    /*on charge la liste des restos*/
     this.restaurantService.getRestaurantList().subscribe(rep => {
         this.restaurantList = rep;
       }
     );
 
-    /*/!*On ne recharge la commandList seulement si elle est vide*!/
-    if (this.commandsList.length === 0) {
-      this.commandService.getCommands().subscribe(rep => {
-        this.commandsList = rep;
 
-      });
-    }
+    /*on charge la liste des commandes par restauId*/
+    this.commandService.getCommandsByEtatAndBetweenTwoDates('Livree', this.startUrl, this.endUrl).subscribe(rep => {
+        this.commandsListOfTheDay = rep;
+      }
+    );
 
-    /!*On ne recharge la restaurantList seulement si elle est vide*!/
-    if (this.restaurantList.length === 0) {
-      this.restaurantService.getRestaurantList().subscribe(rep => {
-          this.restaurantList = rep;
-        }
-      );
-    }
 
-/!*On charge la liste des matrix à enddate null et startDate<=today*!/
-    this.matrixService.getMatrixByEndDateNullAndStartDatePassed('2000-01-01', this.todayDate).subscribe(rep => {
-      this.matrixList = rep;
-
-    });*/
 
 
 
@@ -81,10 +76,18 @@ export class RestaurantListComponent implements OnInit {
 
   }
 
-findNextNumberWeek(){
+  findNextNumberWeek() {
     return moment().add(1, 'week').format('w');
-}
+  }
 
+  getCommandQuantityByRestaurantIdAndDate(restaurantId, date) {
+    console.log('dans le get du composant');
+    this.commandService.getCommandByRestaurantIdAndDate(restaurantId, date).subscribe(rep => {
+      let quantity;
+      quantity = rep;
+      return quantity;
+    });
+  }
 
   findMondayOfTheWeek(date) {
     switch (date.getDay()) {
@@ -125,7 +128,7 @@ findNextNumberWeek(){
   }
 
   findSundayOfTheWeek(date) {
-    this.sundayOfTheWeek = moment().add(6, 'days').format('YYYY-MM-DD');
+    this.sundayOfTheWeek = moment(this.mondayOfTheWeek).add(6, 'days').format('YYYY-MM-DD');
   }
 
   findMondayOfTheWeekInFrenchFormat(date) {
@@ -141,26 +144,14 @@ findNextNumberWeek(){
   }
 
 
-  getQuantityCommandByRestauIdAndDate(restaurantId, date) {
-    this.commandService.getCommandByRestaurantIdAndDate(restaurantId, date).subscribe(rep => {
-        this.command = rep;
-        return this.command.quantity;
+  displayNameOfRestaurantId(restaurantId) {
+    for (const restaurant of this.restaurantList) {
+      if (restaurant.id === restaurantId) {
+        return restaurant.name;
       }
-    );
+    }
   }
 
 
-/*  getMatrixByEndDateNullAndStartDatePassed(restaurantId) {
-
-    this.matrixService.getMatrixByRestaurantIdAndEndDateNullAndStartDateBetweenBeginAndFinish(restaurantId, '2000-01-01', this.todayDate).subscribe(rep => {
-      this.matrix = rep;
-
-    });
-  }*/
-
-/*  function(restaurantId): Matrix{
-    this.getMatrixByEndDateNullAndStartDatePassed(restaurantId);
-    return this.matrix;
-  }*/
 
 }

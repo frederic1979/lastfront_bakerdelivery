@@ -37,6 +37,10 @@ export class CommandService {
     return this.httpClient.get<Command[]>('http://localhost:8080/api/bakerdelivery/commands/etat/' + etat + '/' + date);
   }
 
+  getCommandsByEtatAndBetweenTwoDates(etat, start, end): Observable<Command[]> {
+    return this.httpClient.get<Command[]>('http://localhost:8080/api/bakerdelivery/commands/etat/' + etat + '/' + start + '/' + end);
+  }
+
   getCommandsByDate(date): Observable<Command[]> {
     return this.httpClient.get<Command[]>('http://localhost:8080/api/bakerdelivery/commands/date/' + date);
   }

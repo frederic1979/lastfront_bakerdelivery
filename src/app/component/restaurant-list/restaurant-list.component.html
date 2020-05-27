@@ -1,6 +1,6 @@
 
 <h3>Semaine N° {{numberOfActualWeek}}</h3>
-<h6>Du {{mondayOfTheWeek2}} au {{sundayOfTheWeek}}</h6>
+<h6>Du {{startUrl}} au {{endUrl}}</h6>
 
 <div class="container">
 
@@ -11,13 +11,14 @@
     <thead >
     <tr>
       <th>Restaurant</th>
-      <th>lundi </th>
-      <th>mardi </th>
-      <th>mercredi </th>
-      <th>jeudi </th>
-      <th>vendredi </th>
-      <th>samedi </th>
-      <th>dimanche </th>
+      <th>{{startUrl}} </th>
+      <th>{{findOtherDayOfTheWeek(startUrl,1)}} </th>
+      <th>{{findOtherDayOfTheWeek(startUrl,2)}} </th>
+      <th>{{findOtherDayOfTheWeek(startUrl,3)}} </th>
+      <th>{{findOtherDayOfTheWeek(startUrl,4)}} </th>
+      <th>{{findOtherDayOfTheWeek(startUrl,5)}} </th>
+      <th>{{findOtherDayOfTheWeek(startUrl,6)}} </th>
+
       <th>TOTAL semaine</th>
 
 
@@ -26,34 +27,23 @@
 
     <tbody>
 
-<!--    <tr *ngFor="let restaurant of restaurantList">
-
-      <td> {{restaurant.name}}</td>
-
-      <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,'2020-05-19')}}</td>
-      <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,1))}}</td>
-      <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,2))}}</td>
-      <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,3))}}</td>
-      <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,4))}}</td>
-      <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,5))}}</td>
-      <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,6))}}</td>
-      <td></td>
-
-    </tr>-->
 
 
 <tr *ngFor="let restaurant of restaurantList">
 
-  <td> {{restaurant.name}}</td>
 
- <!-- <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,'2020-05-25')}}</td>-->
-<!--  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,1))}}</td>
-  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,2))}}</td>
+  <td>{{restaurant.name}}</td>
+
+
+<!--
+  <td>{{getCommandQuantityByRestaurantIdAndDate(restaurant.id,startUrl)}}</td>
+&lt;!&ndash;  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,2))}}</td>
   <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,3))}}</td>
   <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,4))}}</td>
   <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,5))}}</td>
-  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,6))}}</td>-->
+  <td>{{getQuantityCommandByRestauIdAndDate(restaurant.id,findOtherDayOfTheWeek(mondayOfTheWeek,6))}}</td>&ndash;&gt;
   <td></td>
+-->
 
 </tr>
 
@@ -65,19 +55,3 @@
 
 
 </div>
-
-<!--
-<tr *ngFor="let matrix of matrixList">
-
-  <td>{{matrix.restaurantId}}</td>
-  <td>{{matrix.mondayQuantity}}</td>
-  <td>{{matrix.tuesdayQuantity}}</td>
-  <td>{{matrix.wednesdayQuantity}}</td>
-  <td>{{matrix.thursdayQuantity}}</td>
-  <td>{{matrix.fridayQuantity}}</td>
-  <td>{{matrix.saturdayQuantity}}</td>
-  <td>{{matrix.sundayQuantity}}</td>
-
-
-</tr>
--->

@@ -35,7 +35,7 @@ import { CreationMatrixComponent } from './component/creation-matrix/creation-ma
     HttpClientModule,
     RouterModule.forRoot([
       {path: '', component: WelcomePageComponent},
-      {path: 'restaurants', component: RestaurantListComponent},
+      {path: 'restaurants/:start/:end', component: RestaurantListComponent},
       {path: 'restaurants/:restaurantId/:date', component: RestaurantDetailComponent},
       {path: 'onboard/:date', component: DeliveryOnboardComponent},
       {path: 'matrix/:restaurantId', component: CreationMatrixComponent},
