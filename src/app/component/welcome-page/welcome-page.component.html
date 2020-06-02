@@ -6,7 +6,7 @@
         <a (click)=getRestaurantList() href="#">Choix Restaurant &ensp;</a>
         <ul class="sous" >
           <li *ngFor="let restaurant of restaurantList" >
-            <a href="#" [routerLink]="['restaurants',restaurant.id,date]" > {{ restaurant.name }} </a>
+            <a href="#" [routerLink]="['restaurants/compteur',restaurant.id,date]" > {{ restaurant.name }} </a>
 
           </li>
         </ul>

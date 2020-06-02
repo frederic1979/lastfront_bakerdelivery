@@ -29,12 +29,13 @@ export class RestaurantListComponent implements OnInit {
   matrixList: Matrix[] = new Array();
   matrix: Matrix ;
   mat: Matrix ;
-  commandsListOfTheDay: Command[] = new Array();
+  commandsListOfTheWeek: Command[] = new Array();
   command: Command;
   restaurantList: Restaurant[] = new Array();
   date = new Date();
   todayDate = moment(this.date).format('YYYY-MM-DD');
   numberOfActualWeek;
+  id;
   startUrl;
   endUrl;
 
@@ -45,6 +46,7 @@ export class RestaurantListComponent implements OnInit {
   ngOnInit() {
 
     this.route.paramMap.subscribe(params => {
+      this.id = params.get('id');
       /*On top la date de URL*/
       this.startUrl = params.get('start');
       this.endUrl = params.get('end');
@@ -59,8 +61,9 @@ export class RestaurantListComponent implements OnInit {
 
 
     /*on charge la liste des commandes par restauId*/
-    this.commandService.getCommandsByEtatAndBetweenTwoDates('Livree', this.startUrl, this.endUrl).subscribe(rep => {
-        this.commandsListOfTheDay = rep;
+    this.commandService.getCommandsBetweenTwoDates(this.id, this.startUrl, this.endUrl).subscribe(rep => {
+        this.commandsListOfTheWeek = rep;
+        /*this.ngOnInit();*/
       }
     );
 
@@ -81,12 +84,14 @@ export class RestaurantListComponent implements OnInit {
   }
 
   getCommandQuantityByRestaurantIdAndDate(restaurantId, date) {
-    console.log('dans le get du composant');
-    this.commandService.getCommandByRestaurantIdAndDate(restaurantId, date).subscribe(rep => {
-      let quantity;
-      quantity = rep;
-      return quantity;
-    });
+    for (let command of this.commandsListOfTheWeek) {
+      if (command.restaurantId === restaurantId && command.date === date) {
+
+        return command.quantity;
+
+      }
+    }
+
   }
 
   findMondayOfTheWeek(date) {

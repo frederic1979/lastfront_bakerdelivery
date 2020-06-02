@@ -35,11 +35,21 @@
 
 
 
-  <div >
-    <a id="stock" style="text-decoration:none" [routerLink]="['/restaurants',mondayOfTheWeek,sundayOfTheWeek]" title="Ma liste de restaurants">
-      <button class="button_connexion" type="submit">Stock de la semaine</button>
-    </a>
-  </div>
+
+
+  <nav id="user_choice">
+    <ul>
+      <li class="deroulant">
+        <a (click)=getWeekList() href="#">Stock</a>
+        <ul class="sous" >
+          <li *ngFor="let week of weekList" >
+            <a href="#" [routerLink]="['/restaurants/week',week.id,week.start,week.end]" > Semaine n°{{ week.id }} </a>
+
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
 
 
 

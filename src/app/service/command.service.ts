@@ -24,7 +24,7 @@ export class CommandService {
   }
 
   getCommandByRestaurantIdAndDate(restaurantId, date): Observable<Command> {
-    return this.httpClient.get<Command>('http://localhost:8080/api/bakerdelivery/commands/' + restaurantId + '/' + date);
+    return this.httpClient.get<Command>('http://localhost:8080/api/bakerdelivery/commands/restaurant/' + restaurantId + '/' + date);
   }
 
   getCommandsByRestaurantIdAndBetweenTwoDates(restaurantId, start, end): Observable<Command[]> {
@@ -37,8 +37,8 @@ export class CommandService {
     return this.httpClient.get<Command[]>('http://localhost:8080/api/bakerdelivery/commands/etat/' + etat + '/' + date);
   }
 
-  getCommandsByEtatAndBetweenTwoDates(etat, start, end): Observable<Command[]> {
-    return this.httpClient.get<Command[]>('http://localhost:8080/api/bakerdelivery/commands/etat/' + etat + '/' + start + '/' + end);
+  getCommandsBetweenTwoDates(id, start, end): Observable<Command[]> {
+    return this.httpClient.get<Command[]>('http://localhost:8080/api/bakerdelivery/commands/week/' + id + '/' + start + '/' + end);
   }
 
   getCommandsByDate(date): Observable<Command[]> {
